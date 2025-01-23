@@ -1,4 +1,9 @@
 version: "3.1"
 
 stories:
-
+- story: story1
+  steps:
+  - intent: start_chat
+  - action: utter_start
+  - intent: end_chat
+  - action: utter_end

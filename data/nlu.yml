@@ -1,6 +1,45 @@
 version: "3.1"
 
 nlu:
+- intent: start_chat
+  examples: |
+    - Hi!
+    - Hey, how are you?
+    - Hello!
+    - Good morning!
+    - Good evening!
+    - Hey there!
+    - Hi, how's it going?
+    - Hello, is everything okay?
+    - Hi, are you there?
+    - Hi, I need some help.
+    - Hello, can we talk?
+    - Hi, I have a question.
+    - Hey, can you assist me?
+    - Shall we start?
+
+- intent: end_chat
+  examples: |
+    - Okay, thanks for your help.
+    - That’s all for now, thanks.
+    - I don’t have any more questions, thank you.
+    - That’s it for now, thank you so much.
+    - Alright, we’ll catch up later.
+    - Thanks for your time.
+    - I’ll leave now, have a great day!
+    - That’s all for now, bye!
+    - Great, we can end it here.
+    - Goodbye!
+    - Bye, see you next time!
+    - Have a great day!
+    - See you next time!
+    - Talk to you soon.
+    - Bye, thanks for everything!
+    - Thanks, bye!
+    - Okay, see you around.
+    - Thanks, see you next time!
+    - See you soon!
+    
 - intent: provide_form_quality
   examples: |
     - Only count major films [7.5](form_quality)

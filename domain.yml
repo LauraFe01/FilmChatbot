@@ -1,6 +1,8 @@
 version: "3.1"
 
 intents:
+  - start_chat
+  - end_chat
   - ask_film_count
   - provide_form_quality
   - provide_form_author
@@ -99,6 +101,19 @@ actions:
 
 
 responses:
+  utter_start:
+    - text: "🎉 Welcome! I'm your personal movie assistant 🎥. Here's what I can do for you:
+      \n- 🎬 Personalized recommendations: I can help you find movies based on your preferences (genre, year, rating, and more).
+      \n- 📝 Movie information: I provide details about plots, directors, actors, and genres.
+      \n- 🎥 Movies by director or actor: I list films made by a specific director or featuring a specific actor.
+      \n- ⭐ Top charts: I can show you the highest-rated movies or current blockbusters.
+
+
+      \nI'm here to help you discover your next favorite movie. Let's start! 🍿✨"
+  
+  utter_end:
+    - text: "Goodbye! Let me know if you need help again."
+
   utter_form_stopped:
     - text: "🛑 Hey, it's okay! Take your time. Choosing a film is not easy. 🍿"
 
