@@ -1,0 +1,160 @@
+version: "3.1"
+
+intents:
+  - ask_film_count
+  - provide_form_quality
+  - provide_form_author
+  - provide_min_release_year
+  - provide_movie_recommendation
+  - provide_genre
+  - provide_gross_votes_movie_recommendation
+  - provide_votes_form
+  - skip
+  - stop
+
+forms:
+  film_count_form:
+    required_slots:
+      - form_author
+      - form_quality
+  
+  movie_recommendation_form:
+    required_slots:
+      - min_release_year
+      - form_genre
+      - form_quality
+  
+  gross_votes_recommendation_form:
+    required_slots:
+      - form_votes
+      - form_gross
+
+entities:
+  - form_quality
+  - form_author
+  - min_release_year
+  - form_genre
+  - form_votes
+  - form_gross
+
+slots:
+  form_quality:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: form_quality
+      - type: from_trigger_intent
+        intent: skip
+        value: "none"
+
+  form_author:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: form_author
+  
+  min_release_year:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: min_release_year
+
+  form_genre:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: form_genre
+  
+  form_votes:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: form_votes
+
+  form_gross:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: form_gross
+
+actions:
+  - action_count_films
+  - validate_film_count_form
+  - action_reset_director_form
+  - utter_form_stopped
+  - action_provide_movie_recommendation
+  - validate_movie_recommendation_form
+  - action_reset_movie_preferences
+  - action_gross_votes_recommendation
+  - action_reset_gross_votes_recommendation_form 
+  - validate_gross_votes_recommendation_form
+
+
+
+
+responses:
+  utter_form_stopped:
+    - text: "🛑 Hey, it's okay! Take your time. Choosing a film is not easy. 🍿"
+
+  utter_ask_form_author:
+    - text: "🖋️ What is the name of the author? 🎬"
+
+  utter_ask_form_quality:
+    - text: "⭐ Are you only interested in movies with a minimum rating? (If not, type 'skip')"
+
+  utter_no_movies_found:
+    - text: "❌ Sorry, I couldn't find any movies matching your preferences. Try something different! 🎥"
+  
+  utter_ask_movie_recommendation_form_min_release_year:
+  - text: "🎉 Sure! To recommend the perfect movie for you, I’ll start by asking a few questions:
+  
+  
+  \nWhat is the minimum release year for the movie you're looking for? "
+    buttons:
+    - title: "1980"
+      payload: '/provide_min_release_year{"min_release_year": 1980}'
+    - title: "1990"
+      payload: '/provide_min_release_year{"min_release_year": 1990}'
+    - title: "2000"
+      payload: '/provide_min_release_year{"min_release_year": 2000}'
+    - title: "2010"
+      payload: '/provide_min_release_year{"min_release_year": 2010}'
+    - title: "2020"
+      payload: '/provide_min_release_year{"min_release_year": 2020}'
+
+          
+  utter_ask_movie_recommendation_form_form_genre:
+    - text: "🎬 What genre of movie do you prefer? (e.g., action, comedy, drama)"
+
+  utter_ask_movie_recommendation_form_form_quality:
+    - text: "⭐ What is the minimum rating you want for the movie (0.0-10.0)? Please use decimals, e.g. 7.0"
+  
+  utter_ask_form_votes:
+  - text: "🎥 The world is full of amazing films! 🌍 Use the number of votes as a filter to find the most popular ones. 📝 \nPlease provide me with the number of votes for which you want to filter the movies"
+
+  utter_ask_form_gross:
+    - text: "💰 Much better! Give me one more hand, please. \nWe also filter based on film box office income. \nPlease select the numberò. I'm schematic. 📊"
+      buttons:
+      - title: "60000"
+        payload: '/provide_gross_votes_movie_recommendation{"form_gross": 60000}'
+      - title: "150000"
+        payload: '/pprovide_gross_votes_movie_recommendation{"form_gross": 150000}'
+      - title: "500000"
+        payload: '/provide_gross_votes_movie_recommendation{"form_gross": 500000}'
+      - title: "1000000"
+        payload: '/provide_gross_votes_movie_recommendation{"form_gross": 1000000}'
+      - title: "3000000"
+        payload: '/provide_gross_votes_movie_recommendation{"form_gross": 3000000}'
+
+
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

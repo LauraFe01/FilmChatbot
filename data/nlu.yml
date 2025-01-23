@@ -1,0 +1,218 @@
+version: "3.1"
+
+nlu:
+- intent: provide_form_quality
+  examples: |
+    - Only count major films [7.5](form_quality)
+    - [2.6](form_quality)
+    - [5,0](form_quality)
+    - [5.8](form_quality)
+    - I want to count films with a rating of [8,2](form_quality)
+    - Show me movies rated [7.8](form_quality) or higher
+    - [3](form_quality)
+    - Find me movies with a rating of [9.0](form_quality)
+    - Count films with a quality rating above [7.0](form_quality)
+    - I’d like films with a rating of [6,4](form_quality) or higher
+    - Show me movies with a rating of [8.2](form_quality)
+    - [4](form_quality)
+    - [9,0](form_quality)
+    - Find me some films with a rating of [9.5](form_quality)
+    - Please count films with a rating of [7](form_quality)
+    - [8.1](form_quality)
+    - Only show me movies rated [8.0](form_quality) or higher
+    - I’m looking for films with a rating of [7,0](form_quality)
+    - [9,3](form_quality)
+    - Count films with a score of [9,3](form_quality)
+    - [6.7](form_quality)
+    - [6](form_quality)
+    - [1](form_quality)
+    - [5](form_quality)
+    - Find me movies rated [8.7](form_quality)
+    - Only count [high-quality](form_quality) films
+    - [2.5](form_quality)
+    - [7](form_quality)
+    - I prefer movies with a quality rating above [8,0](form_quality)
+    - Count films rated [7.9](form_quality) or higher
+    - [5.0](form_quality)
+    - [2,8](form_quality)
+    - [5.5](form_quality)
+    - [8](form_quality)
+    - [6](form_quality)
+    - [9](form_quality)
+
+- intent: provide_form_author
+  examples: |
+    - [Quentin Tarantino](form_author)
+    - [Christopher Nolan](form_author)
+    - [Steven Spielberg](form_author)
+    - [Martin Scorsese](form_author)
+    - [Alfred Hitchcock](form_author)
+    - [Ridley Scott](form_author)
+    - [James Cameron](form_author)
+    - [Woody Allen](form_author)
+    - [Tim Burton](form_author)
+    - [Stanley Kubrick](form_author)
+    - [Coen Brothers](form_author)
+    - [George Lucas](form_author)
+    - [Francis Ford Coppola](form_author)
+    - [David Fincher](form_author)
+    - [Robert Zemeckis](form_author)
+    - [Guillermo del Toro](form_author)
+    - [Ang Lee](form_author)
+    - [Wes Anderson](form_author)
+    - [Hayao Miyazaki](form_author)
+    - [Akira Kurosawa](form_author)
+
+- intent: ask_film_count
+  examples: |
+    - I would like to count the films of a director
+    - How many films has a director made?
+    - Can you count the movies of a director?
+    - Tell me the number of movies by a director
+    - Count the films of a director
+    - I want to know how many films a director has made
+    - Could you tell me how many films a director has directed?
+    - What's the total number of movies by a director?
+    - How many movies has a director worked on?
+    - Can you provide the film count for a director?
+    - I'd like to know the total movies made by a director
+    - Please count the movies made by a director
+    - How many films does a director have in their filmography?
+    - Can you tell me the number of films directed by someone?
+    - What's the film count of a specific director?
+
+- intent: provide_movie_recommendation
+  examples: |
+    - Can you recommend me a movie?
+    - Could you suggest a film to watch?
+    - What movie would you suggest?
+    - I'm looking for a movie, do you have any suggestions?
+    - Can you give me a movie recommendation?
+    - What film should I watch?
+    - Any good movies you could recommend?
+    - I need a movie suggestion, please.
+    - Could you tell me which movie to watch next?
+    - What movie do you think I would like?
+
+
+- intent: provide_genre
+  examples: |
+    - [action](form_genre)
+    - [comedy](form_genre)
+    - I want to watch a [horror](form_genre) movie.
+    - Show me some [science fiction](form_genre) films.
+    - I prefer [romantic](form_genre) movies.
+    - [drama](form_genre)
+    - I’m in the mood for a [thriller](form_genre).
+    - [adventure](form_genre)
+    - [fantasy](form_genre)
+    - [mystery](form_genre).
+    - What about a [Psychological](form_genre) thriller?
+    - Do you have suggestions for [Sports](form_genre) films?
+    - I want to watch a [Legal](form_genre) drama.
+    - [Political](form_genre)
+    - Give me a [Classic](form_genre) movie.
+    - Do you have [Independent](form_genre) film suggestions?
+    - How about a [Dark Comedy](form_genre)?
+    - Show me [Experimental](form_genre) movies.
+    - Let’s go for [Sci-Fi](form_genre).
+    - [Fantasy Adventure](form_genre)
+    - I’d like a [Mystery Thriller](form_genre).
+    - Suggest a [Romantic Comedy](form_genre).
+    - Can I see some [Epic](form_genre) films?
+    - I want a [comedy](form_genre) and [action](form_genre) movie.
+    - Show me films that are both [horror](form_genre) and [fantasy](form_genre).
+    - Can you recommend a [drama](form_genre) and [romantic](form_genre) film?
+    - I’m in the mood for a [mystery](form_genre) or [thriller](form_genre) movie.
+    - Give me a [comedy](form_genre) or [romantic comedy](form_genre) movie.
+    - Find me a [science fiction](form_genre) and [adventure](form_genre) film.
+    - Show me movies that are a combination of [action](form_genre) and [thriller](form_genre).
+    - Do you have [romantic](form_genre) or [drama](form_genre) suggestions?
+    - How about a [mystery](form_genre) and [psychological](form_genre) thriller?
+    - Suggest a [comedy](form_genre) and [horror](form_genre) film.
+    - Show me films with [romantic](form_genre), [drama](form_genre), and [adventure](form_genre) genres.
+    - I want to watch a [political](form_genre), [drama](form_genre), and [comedy](form_genre) movie.
+
+- intent: provide_gross_votes_movie_recommendation
+  examples: |
+    - Can you recommend films based on ratings and/or price?
+    - Can you tell me which films are the best based on the number of votes?
+    - Best films according to the number of reviews
+    - What are the top films by ratings and box office gross?
+    - Can you list films with the highest number of reviews?
+    - Suggest movies with the best ratings and revenue
+    - Which films have the most votes and are worth watching?
+    - Can you recommend movies with both high ratings and high gross earnings?
+    - What are the most popular films based on reviews and revenue?
+    - Show me the top-rated films with high earnings
+    - Recommend some movies with a large number of positive reviews
+    - What are the highest-grossing movies with good ratings?
+    - Can you suggest movies that are both critically acclaimed and commercially successful?
+    - Which films have the best combination of ratings and box office success?
+
+
+- intent: provide_votes_form
+  examples: |
+    - Show me films with more than [75000](form_votes) audience votes.
+    - Over [4572](form_votes)
+    - Suggest movies with at least [200000](form_votes) votes.
+    - Find movies with [50000](form_votes) votes or higher.
+    - Over [47891](form_votes)
+    - I prefer films with a vote count exceeding [125000](form_votes).
+    - Movies with at least [300000](form_votes) votes would be great.
+    - Over [13000](form_votes)
+    - Look for movies rated by more than [40000](form_votes) users.
+    - Any suggestions for movies with over [100000](form_votes) votes?
+    - More than [20000](form_votes)
+    - Show movies voted by at least [10000](form_votes) users.
+    - Find popular films with [500000](form_votes) or more votes.
+    - At least [7500](form_votes) audience ratings.
+    - Can you list movies with over [350000](form_votes) reviews?
+    - Over [30000](form_votes)
+    - I’d like films with a minimum of [45000](form_votes) votes.
+    - [2000](form_votes)
+    - Any movies with [8000](form_votes) votes or higher?
+    - Over [70000](form_votes)
+    - Suggest films that received more than [25000](form_votes) ratings.
+    - What about movies with [12000](form_votes) or more reviews?
+    - [9000](form_votes)
+    - More than [10000](form_votes)
+    - Find something with at least [15000](form_votes) votes.
+    - Films with over [60000](form_votes) votes.
+    - [5000](form_votes)
+    - At least [300000](form_votes) audience votes.
+    - Can you find films with [750000](form_votes) or higher ratings?
+    - [25000](form_votes)
+    - Movies that have been reviewed by over [100000](form_votes) people.
+    - Over [4500](form_votes)
+    - Look for films with a vote count of [200000](form_votes) or more.
+    - Films with [3000](form_votes) or more audience reviews.
+    - Show me highly rated films with over [85000](form_votes) votes.
+    - At least [125000](form_votes) votes, please.
+    - More than [3000](form_votes) ratings.
+    - Films with [50000](form_votes) audience votes or higher.
+    - Any good movies with at least [12000](form_votes) ratings?
+    - [78000](form_votes)
+    - Show me films with [150000](form_votes) or more ratings.
+
+
+
+- intent: stop
+  examples: |
+    - Stop
+    - Exit
+    - Close
+
+- intent: skip
+  examples: |
+    - skip
+    - I want to skip
+    - pass
+    - none
+    - not applicable
+    - I don't know
+    - leave it empty
+
+- lookup: movie
+  examples: |
+    ../Dataset/film_titles.txt
