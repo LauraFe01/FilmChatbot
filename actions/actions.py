@@ -15,6 +15,7 @@ from rasa_sdk.events import UserUtteranceReverted
 from rasa_sdk.types import DomainDict
 from fuzzywuzzy import process
 import pandas as pd
+from rasa_sdk.events import SlotSet, AllSlotsReset, ActiveLoop
 
 
 # Carica il dataset
@@ -731,3 +732,30 @@ class ActionRemoveUnnecessarySlots(Action):
                 events.append(SlotSet(slot, None))
         
         return events
+    
+class ActionResumeFormMovieReccomendation(Action):
+    def name(self):
+        return "action_resume_form_movie_reccomendation"
+
+    def run(self, dispatcher, tracker, domain):
+        # Riattiva il ciclo della form senza resettare gli slot
+        dispatcher.utter_message(text="🔄 Let's pick up where we left off! 😊")
+        return [ActiveLoop("movie_recommendation_form")]
+    
+class ActionResumeFormMovieCount(Action):
+    def name(self):
+        return "action_resume_form_movie_count"
+
+    def run(self, dispatcher, tracker, domain):
+        # Riattiva il ciclo della form senza resettare gli slot
+        dispatcher.utter_message(text="🔄 Let's pick up where we left off! 😊")
+        return [ActiveLoop("film_count_form")]
+    
+class ActionResumeFormGrossMovie(Action):
+    def name(self):
+        return "action_resume_form_movie_gross"
+
+    def run(self, dispatcher, tracker, domain):
+        # Riattiva il ciclo della form senza resettare gli slot
+        dispatcher.utter_message(text="🔄 Let's pick up where we left off! 😊")
+        return [ActiveLoop("gross_votes_recommendation_form")]

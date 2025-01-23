@@ -146,6 +146,9 @@ actions:
   - action_ask_clarification
   - action_remove_unnecessary_slots
   - utter_fallback
+  - action_resume_form_movie_reccomendation
+  - action_resume_form_movie_count
+  - action_resume_form_movie_gross
 
 
 
@@ -217,7 +220,7 @@ responses:
     - text: "🎬 What genre of movie do you prefer? (e.g., action, comedy, drama)"
 
   utter_ask_movie_recommendation_form_form_quality:
-    - text: "⭐ What is the minimum rating you want for the movie (0.0-10.0)? Please use decimals, e.g. 7.0"
+    - text: "⭐ What is the minimum rating you want for the movie (0.0-10.0)?"
   
   utter_ask_form_votes:
   - text: "🎥 The world is full of amazing films! 🌍 Use the number of votes as a filter to find the most popular ones. 📝 \nPlease provide me with the number of votes for which you want to filter the movies"
@@ -241,6 +244,9 @@ responses:
   
   utter_fallback:
     - text: "❌ I'm sorry, your answer is not appropriate whith the question"
+
+  utter_no_form_in_form:
+    - text: "❌ Please complete the form before activating other actions"
 
 
 
