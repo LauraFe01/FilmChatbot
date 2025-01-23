@@ -8,6 +8,13 @@ rules:
     - action: film_count_form
     - active_loop: film_count_form
 
+- rule: respond to fallback
+  condition:
+    - active_loop: null
+  steps:
+    - intent: out_of_scope
+    - action: utter_out_of_scope
+
 - rule: Complete the form (with optional slots)
   condition:
     - active_loop: film_count_form

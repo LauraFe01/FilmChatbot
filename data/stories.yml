@@ -1,9 +1,87 @@
 version: "3.1"
 
 stories:
-- story: story1
-  steps:
-  - intent: start_chat
-  - action: utter_start
-  - intent: end_chat
-  - action: utter_end
+  - story: general_story_1
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_top_movies
+    - action: action_list_top_movies
+    - intent: ask_movie_info
+    - action: action_ask_movie_info
+    - intent: end_chat
+    - action: utter_end
+
+  - story: general_story_2
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_movies_by_actor
+    - action: action_movies_by_actor
+    - intent: ask_movies_by_director
+    - action: action_movies_by_director
+    - intent: end_chat
+    - action: utter_end
+
+  - story: general_story_3
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_director
+    - action: action_ask_director
+    - intent: ask_genre
+    - action: action_ask_genre
+    - intent: end_chat
+    - action: utter_end
+
+  - story: general_story_4
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_capabilities
+    - action: utter_capabilities
+    - intent: ask_movies_by_actor
+    - action: action_movies_by_actor
+    - intent: end_chat
+    - action: utter_end
+
+  - story: general_story_with_fallback
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_top_movies
+    - action: action_list_top_movies
+    - intent: ask_genre
+    - action: action_ask_genre
+    - intent: nlu_fallback
+    - action: utter_fallback
+    - intent: end_chat
+    - action: utter_end
+
+  - story: general_story_extended
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_movies_by_actor
+    - action: action_movies_by_actor
+    - intent: ask_movie_info
+    - action: action_ask_movie_info
+    - intent: ask_genre
+    - action: action_ask_genre
+    - intent: ask_director
+    - action: action_ask_director
+    - intent: end_chat
+    - action: utter_end
+
+  - story: exploratory_story
+    steps:
+    - intent: start_chat
+    - action: utter_start
+    - intent: ask_capabilities
+    - action: utter_capabilities
+    - intent: ask_movies_by_director
+    - action: action_movies_by_director
+    - intent: ask_movie_info
+    - action: action_ask_movie_info
+    - intent: end_chat
+    - action: utter_end

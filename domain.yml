@@ -3,7 +3,14 @@ version: "3.1"
 intents:
   - start_chat
   - end_chat
+  - ask_top_movies
+  - ask_director
+  - ask_movies_by_director
+  - ask_genre
+  - ask_movies_by_actor
+  - ask_movie_info
   - ask_film_count
+  - out_of_scope
   - provide_form_quality
   - provide_form_author
   - provide_min_release_year
@@ -11,6 +18,8 @@ intents:
   - provide_genre
   - provide_gross_votes_movie_recommendation
   - provide_votes_form
+  - ask_capabilities
+  - nlu_fallback
   - skip
   - stop
 
@@ -32,6 +41,10 @@ forms:
       - form_gross
 
 entities:
+  - movie
+  - genre
+  - director
+  - actor
   - form_quality
   - form_author
   - min_release_year
@@ -40,6 +53,34 @@ entities:
   - form_gross
 
 slots:
+  movie:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: movie
+
+  genre:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: genre
+
+  director:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: director
+
+  actor:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: actor
+
   form_quality:
     type: float
     influence_conversation: false
@@ -86,6 +127,12 @@ slots:
         entity: form_gross
 
 actions:
+  - action_list_top_movies
+  - action_ask_director
+  - action_ask_genre
+  - action_movies_by_director
+  - action_movies_by_actor
+  - action_ask_movie_info
   - action_count_films
   - validate_film_count_form
   - action_reset_director_form
@@ -96,6 +143,9 @@ actions:
   - action_gross_votes_recommendation
   - action_reset_gross_votes_recommendation_form 
   - validate_gross_votes_recommendation_form
+  - action_ask_clarification
+  - action_remove_unnecessary_slots
+  - utter_fallback
 
 
 
@@ -113,6 +163,25 @@ responses:
   
   utter_end:
     - text: "Goodbye! Let me know if you need help again."
+  
+  utter_capabilities:
+    - text: "🎬 Hi! I'm your movie assistant! Here's what I can do for you:
+    
+      \n🏆 1. Find the most acclaimed movies
+      \nℹ️ 2. Provide information about specific movies
+      \n🎥 3. Find movies by director
+      \n🌟 4. Find movies by actor
+      \n🎭 5. Tell you about movie genres
+      \n🎯 6. Give you personalized movie recommendations based on your preferences
+      \n📊 7. Count films by director
+      \n💰 8. Recommend movies based on ratings and box office performance
+      
+      \nFeel free to ask me about any of these topics! For example, you can say:
+      \n- 'What are the best movies of all time?'
+      \n- 'Who directed Inception?'
+      \n- 'Can you recommend me a movie?'
+      \n- 'What movies did Christopher Nolan make?'"
+  
 
   utter_form_stopped:
     - text: "🛑 Hey, it's okay! Take your time. Choosing a film is not easy. 🍿"
@@ -166,6 +235,13 @@ responses:
         payload: '/provide_gross_votes_movie_recommendation{"form_gross": 1000000}'
       - title: "3000000"
         payload: '/provide_gross_votes_movie_recommendation{"form_gross": 3000000}'
+    
+  utter_out_of_scope:
+    - text: "❌ I'm sorry, I can't help with that. Can I assist you with something else?"
+  
+  utter_fallback:
+    - text: "❌ I'm sorry, your answer is not appropriate whith the question"
+
 
 
 
