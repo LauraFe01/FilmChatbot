@@ -40,6 +40,253 @@ nlu:
     - Thanks, see you next time!
     - See you soon!
     
+- intent: ask_top_movies
+  examples: |
+    - What are the best movies of all time?
+    - Can you tell me the most popular movies?
+    - Which movies have the highest ratings?
+    - Recommend me some top-rated movies.
+    - List the best movies ever made.
+    - What are the top 10 movies right now?
+    - Show me some must-watch movies.
+    - What are the top blockbuster movies?
+    - Give me a list of critically acclaimed movies.
+    - What movies should I watch if I want the best ones?
+    - Tell me about the top movies this year.
+    - Which movies are considered the best by critics?
+    - Can you list the most loved movies of all time?
+    - What are some highly recommended movies?
+    - Show me a list of trending movies.
+
+- intent: ask_director
+  examples: |
+    - Who directed [Inception](movie)?
+    - Can you tell me the director of [Titanic](movie)?
+    - Who is the director of [The Godfather](movie)?
+    - Which director made [The Matrix](movie)?
+    - Which director made [the matrix](movie)?
+    - Who is the filmmaker of [Pulp Fiction](movie)?
+    - Tell me who directed [Interstellar](movie)?
+    - Who was behind the movie [Avatar](movie)?
+    - Who was behind the movie [avatar](movie)?
+    - Who directed [Gladiator](movie)?
+    - Tell me the director of [The Pianist](movie).
+    - Who is the director of [Dead Man](movie)?
+    - Can you tell me who directed [Dead Man](movie)?
+    - I want to know who directed [The Pianist](movie).
+    - Who directed the movie [Dead Man](movie)?
+    - Tell me about the director of [The Pianist](movie).
+    - Who directed the film [The Pianist](movie)?
+    - Tell me who directed [Harry Potter and the Half-Blood Prince](movie).
+    - I'd like to know who directed [Harry Potter and the Half-Blood Prince](movie).
+    - Do you know who the director of [Harry Potter and the Half-Blood Prince](movie) is?
+    - Who was the filmmaker of [Harry Potter and the Half-Blood Prince](movie)?
+    - What about the director of [The Pianist](movie)?
+    - Could you tell me who made [The Pianist](movie)?
+    - [The Pianist](movie): who directed it?
+    - Do you know who the director of [The Pianist](movie) is?
+    - Please tell me who directed [The Pianist](movie).
+    - Who was the director of [The Lord of the Rings: The Fellowship of the Ring](movie)?
+    - Can you tell me about the director of [The Lord of the Rings: The Two Towers](movie)?
+    - Do you know who directed [The Lord of the Rings: The Return of the King](movie)?
+    - Who directed the movie [12 Angry Men](movie)?
+    - Tell me the director of [Schindler's List](movie).
+    - Could you find out who directed [Se7en](movie)?
+    - I'd like to know who made [The Silence of the Lambs](movie).
+    - Who was the director behind [Star Wars: Episode V - The Empire Strikes Back](movie)?
+    - Who is the filmmaker of [Joker](movie)?
+    - Can you tell me the filmmaker of [The Dark Knight](movie)?
+    - Which director worked on [Goodfellas](movie)?
+    - Do you know who directed [The Usual Suspects](movie)?
+    - I’m curious about the director of [The Prestige](movie).
+    - Who was the creative mind behind [Memento](movie)?
+    - Tell me who directed [The Lion King](movie)?
+    - Who is credited as the director of [Casablanca](movie)?
+    - Who is the director of [Modern Times](movie)?
+    - Could you tell me who directed [The Shining](movie)?
+    - Who made [Psycho](movie)?
+    - Do you know who directed [A Clockwork Orange](movie)?
+    - Which director created [2001: A Space Odyssey](movie)?
+    - Who directed the classic film [Citizen Kane](movie)?
+    - I’d like to know who made [Ikiru](movie).
+    - Tell me about the director of [La Vita è Bella](movie).
+    - Who worked as the director on [Forrest Gump](movie)?
+    - Can you name the director of [The Green Mile](movie)?
+    - What’s the name of the person who directed [Django Unchained](movie)?
+    - Do you know the director of [The Grand Budapest Hotel](movie)?
+    - Who directed the animated movie [Spider-Man: Into the Spider-Verse](movie)?
+    - Can you share who the director of [WALL·E](movie) is?
+    - Who created the movie [Toy Story 3](movie)?
+    - Who is the person behind [Saving Private Ryan](movie)?
+    - Do you know who directed [Avengers: Endgame](movie)?
+    - Tell me who directed the film [Avengers: Infinity War](movie)?
+    - Who directed [The Godfather: Part II](movie)?
+
+
+- intent: ask_genre
+  examples: |
+    - What is the genre of [Close Encounters of the Third Kind](movie)?
+    - Can you tell me the genre of [Kelly's Heroes](movie)?
+    - Which genre does [The Dark Knight](movie) belong to?
+    - What kind of movie is [12 Angry Men](movie)?
+    - Tell me the genre of [Pulp Fiction](movie).
+    - What's the genre of [Schindler's List](movie)?
+    - Is [inception](movie) a science fiction movie?
+    - Which category does [fight club](movie) fall under?
+    - What type of movie is [the lord of the rings: the return of the king](movie)?
+    - Can you explain the genre of [forrest gump](movie)?
+    - What is [the matrix](movie) classified as?
+    - Which category includes [star wars](movie)?
+    - Is [interstellar](movie) an adventure movie?
+    - Tell me the genre of [the silence of the lambs](movie).
+    - What genre is [the green mile](movie)?
+    - What's the genre of [joker](movie)?
+    - Can you tell me if [goodfellas](movie) is a crime movie?
+    - Which genre does [the godfather](movie) fall into?
+    - What kind of movie is [the pianist](movie)?
+    - Can you explain what genre [the prestige](movie) belongs to?
+    - What is the genre of [se7en](movie)?
+    - What is [the shining](movie) classified under?
+    - What type of movie is [a clockwork orange](movie)?
+    - Which genre is [the godfather: part ii](movie) part of?
+    - Tell me if [django unchained](movie) is a western.
+
+
+- intent: ask_movies_by_director
+  examples: |
+    - What movies did [Christopher Nolan](director) make?
+    - Can you tell me the movies made by [Quentin Tarantino](director)?
+    - Which movies were directed by [Steven Spielberg](director)?
+    - What are the films made by [Martin Scorsese](director)?
+    - Tell me all the movies directed by [Alfred Hitchcock](director).
+    - Show me the films of [Stanley Kubrick](director).
+    - I'd like to know the movies directed by [James Cameron](director).
+    - Can you list the movies made by [Wes Anderson](director)?
+    - What films were directed by [Francis Ford Coppola](director)?
+    - What are the movies created by [Ridley Scott](director)?
+    - Could you tell me the films directed by [Peter Jackson](director)?
+    - Which films were made by [Christopher Nolan](director)?
+    - Tell me about the movies of [Michael Curtiz](director).
+    - I'd like to know the films of [Tony Kaye](director).
+    - What about the films by [Giuseppe Tornatore](director)?
+    - [Olivier Nakache](director): what movies did they make?
+    - Could you tell me the works of [David Fincher](director)?
+    - Please show me all the movies by [Giuseppe Tornatore](director).
+    - Do you know the movies directed by [Tony Kaye](director)?
+    - I want to see all the movies by [Olivier Nakache](director).
+    - What are the works of [Sergio Leone](director)?
+    - Can you tell me all the films made by [Akira Kurosawa](director)?
+    - Tell me about the works of [David Fincher](director).
+    - Which movies belong to [Sergio Leone](director)?
+    - What has [Akira Kurosawa](director) directed?
+    - Movies by [David Fincher](director), please.
+
+- intent: ask_movies_by_actor
+  examples: |
+    - In which movies did [Leonardo DiCaprio](actor) act?
+    - Can you tell me the films featuring [Meryl Streep](actor)?
+    - Which movies has [Tom Hanks](actor) appeared in?
+    - What are the films starring [Scarlett Johansson](actor)?
+    - Show me the movies with [Brad Pitt](actor).
+    - I'd like to know the movies featuring [Natalie Portman](actor).
+    - Can you list the films of [Johnny Depp](actor)?
+    - What films did [Jodie Foster](actor) act in?
+    - Tell me all the movies with [Denzel Washington](actor).
+    - What are the films featuring [Angelina Jolie](actor)?
+    - Could you tell me the movies starring [Will Smith](actor)?
+    - Which films did [Morgan Freeman](actor) appear in?
+    - I'd like to know the movies with [Keanu Reeves](actor).
+    - Can you show me the movies of [Harrison Ford](actor)?
+    - What about the films with [Cate Blanchett](actor)?
+    - [Matthew McConaughey](actor): in which films did he act?
+    - What films has [Julia Roberts](actor) starred in?
+    - Could you tell me the movies with [Ryan Gosling](actor)?
+    - What are the films that [Emma Stone](actor) was in?
+    - What films did [Robert Downey Jr](actor) act in?
+    - Do you know in which movies [Anne Hathaway](actor) appeared?
+    - What movies has [Chris Hemsworth](actor) acted in?
+    - Can you tell me all the films of [Jessica Chastain](actor)?
+    - Which films did [Bradley Cooper](actor) star in?
+    - Tell me about the movies starring [Charlize Theron](actor).
+
+- intent: ask_movie_info
+  examples: |
+    - Can you tell me all the information about [The Silence of the Lambs](movie)?
+    - Could you give me all the details about [It's a Wonderful Life](movie)?
+    - Tell me everything about the movie [Joker](movie).
+    - What can you tell me about the film [It's a Wonderful Life](movie)?
+    - I want to know all the details about [Toy Story](movie).
+    - Can you share all the information about [Toy Story](movie)?
+    - What are the details of [Pulp Fiction](movie)?
+    - Please give me all the information about [Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb](movie).
+    - Can you tell me everything about [The Lord of the Rings](movie)?
+    - I'd like to know everything about [The Silence of the Lambs](movie).
+    - Can you provide all the details on [Alien](movie)?
+    - Tell me all the facts about the movie [The Shawshank Redemption](movie).
+    - Could you give me all the data on [Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb](movie)?
+    - I'd like to hear all the information about [Alien](movie).
+    - Can you tell me the details about [Joker](movie)?
+    - What are all the facts regarding [The Silence of the Lambs](movie)?
+    - Please tell me everything about the film [Psycho](movie).
+    - Could you provide me all the details of [The Avengers](movie)?
+    - What can you tell me about the movie [Psycho](movie)?
+
+- intent: ask_capabilities
+  examples: |
+    - What can you do?
+    - What are your capabilities?
+    - Help me understand what you can do
+    - What kind of help can you provide?
+    - What features do you have?
+    - What are you capable of?
+    - Show me what you can do
+    - Tell me about your functions
+    - What kind of tasks can you help with?
+    - What services do you offer?
+    - How can you assist me?
+    - What are your functionalities?
+    - What kind of information can you provide?
+    - List your capabilities
+    - What am I able to ask you?
+    - What type of questions can I ask?
+    - What are you able to do?
+    - Explain what you can do
+    - Give me an overview of your capabilities
+    - Show me your features
+
+- intent: out_of_scope
+  examples: |
+    - What is the meaning of life?
+    - Can you tell me today's news?
+    - What is the capital of France?
+    - How do I bake a cake?
+    - Can you help me with my math homework?
+    - What's the time now?
+    - How tall is Mount Everest?
+    - What's the stock price of Tesla?
+    - Can you translate this sentence for me?
+    - How do I fix my car?
+    - What are some good restaurants near me?
+    - Who is the president of the United States?
+    - Can you control my smart home devices?
+    - How many planets are in the solar system?
+    - What's the fastest animal in the world?
+    - Can you sing me a song?
+    - How do I get to the nearest train station?
+    - What's the recipe for spaghetti carbonara?
+    - Who invented the telephone?
+    - Can you solve this puzzle for me?
+    - What's my horoscope today?
+    - How do I set up my printer?
+    - What's the exchange rate for USD to EUR?
+    - How do I start a garden?
+    - Can you recommend me a book?
+    - What is the population of Japan?
+    - Can you explain quantum physics to me?
+    - How do I clean my windows?
+    - Who painted the Mona Lisa?
+    - Can you teach me how to code?
+
 - intent: provide_form_quality
   examples: |
     - Only count major films [7.5](form_quality)
