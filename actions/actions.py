@@ -4,28 +4,6 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
-
 import logging
 import re
 from typing import Any, Text, Dict, List
@@ -50,6 +28,261 @@ valid_genre = ['Drama', 'Crime', 'Action', 'Adventure', 'Biography', 'History', 
  'Romance', 'Western', 'Fantasy', 'Comedy', 'Thriller', 'Animation', 'Family',
  'War', 'Mystery', 'Music', 'Horror', 'Musical', 'Film-Noir', 'Sport']
 soglia_fuzzy = 80
+
+class ActionAskClarification(Action):
+    def name(self):
+        return "action_ask_clarification"
+
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="Sorry, I can't understand. Could you rephrase?")
+        return [UserUtteranceReverted()]
+
+
+class ActionListTopMovies(Action):
+    def name(self) -> Text:
+        return "action_list_top_movies"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Ottieni i 5 film con il rating più alto
+        top_movies = movies_df.sort_values(by="IMDB_Rating", ascending=False).head(5)
+
+        response = "🎬 Here are the top-rated movies in IMDB:\n\n"
+        response += "\n".join([
+            f"⭐ {row['Series_Title']} - Rating: {row['IMDB_Rating']}" 
+            for _, row in top_movies.iterrows()
+        ])
+
+        dispatcher.utter_message(text=response)
+        return []
+    
+
+class ActionAskDirectorMovie(Action):
+    def name(self) -> str:
+        return "action_ask_director"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        # Ottieni il nome del film dall'entità 'movie'
+        movie_name = tracker.get_slot("movie")
+
+        if not movie_name:
+            dispatcher.utter_message(text="❓ Please tell me the movie you are asking about. 🎥")
+            return [SlotSet('movie', None)]
+
+        movie_row = movies_df[movies_df['Series_Title'].str.contains(movie_name, case=False, na=False)]
+        
+        if movie_row.empty:
+            new_name, score = process.extractOne(movie_name, movies.tolist())
+            if score > soglia_fuzzy:
+                dispatcher.utter_message("You misspelled the name of the movie. Don't worry, I've got it! 😊✨")
+                movie_row = movies_df[movies_df['Series_Title'].str.contains(new_name, case=False, na=False)]
+
+        
+        logging.info(f"MOVIE NAME: {movie_name}")
+        if not movie_row.empty:
+            if len(movie_row) > 1:
+                message = "🔍 Multiple movies found matching your query:\n"
+                for _, row in movie_row.iterrows():
+                    message += f"🎬 {row['Series_Title']} - Directed by {row['Director']} 🌟\n"
+                dispatcher.utter_message(text=message.strip())
+            else:
+                director = movie_row.iloc[0]['Director']
+                dispatcher.utter_message(
+                    text=f"🎬 The director of {movie_row.iloc[0]['Series_Title']} is {director}. 🌟"
+                )
+        else:
+            dispatcher.utter_message(
+                text=f"😔 I'm sorry, I couldn't find the movie {movie_name} or {new_name} in my database. 📂"
+            )
+
+        return [SlotSet('movie', None)]
+    
+class ActionAskGenre(Action):
+    def name(self) -> str:
+        return "action_ask_genre"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+
+        movie_name = tracker.get_slot("movie")
+
+        if not movie_name:
+            dispatcher.utter_message(text="❓ I couldn't catch the name of the movie. Can you repeat it? 🎥")
+            return [SlotSet('movie', None)]
+
+
+        movie_row = movies_df[movies_df['Series_Title'].str.contains(movie_name, case=False, na=False)]
+
+        if movie_row.empty:
+            new_name, score = process.extractOne(movie_name, movies.tolist())
+            if score > soglia_fuzzy:
+                dispatcher.utter_message("You misspelled the movie. Don't worry, I've got it! 😊✨")
+                movie_row = movies_df[movies_df['Series_Title'].str.contains(new_name, case=False, na=False)]
+
+
+        if not movie_row.empty:
+            alternatives = [
+                f"🎞️ {row['Series_Title']} - Genre: {row['Genre']}" 
+                for _, row in movie_row.iterrows()
+            ]
+            response = "🎬 Here are the genres for the matching movies:\n\n" + "\n".join(alternatives)
+            dispatcher.utter_message(text=response)
+        else:
+            dispatcher.utter_message(
+                text=f"😔 I'm sorry, I couldn't find the movie '{movie_name}' or '{new_name}' in my database. 📂"
+            )
+
+        return [SlotSet('movie', None)]
+    
+class ActionAskDirector(Action):
+    def name(self) -> str:
+        return "action_movies_by_director"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        # Ottieni il valore dello slot 'director'
+        director = tracker.get_slot("director")
+        
+        if not director:
+            dispatcher.utter_message(text="🎬 I couldn't catch the name of the director. Can you repeat it?")
+            return [SlotSet('director', None)]
+
+        # Cerca i film nel database per il regista
+        dir_movies = movies_df[movies_df['Director'].str.contains(director, case=False, na=False)]
+        
+        if dir_movies.empty:
+            new_name, score = process.extractOne(director, director_df.tolist())
+            if score > soglia_fuzzy:
+                dispatcher.utter_message("You misspelled the name of the director. Don't worry, I've got it! 😊✨")
+                dir_movies = movies_df[movies_df['Director'].str.contains(new_name, case=False, na=False)]
+
+
+        if not dir_movies.empty:
+            # Creiamo una lista dei film del regista trovato
+            movie_list = dir_movies['Series_Title'].tolist()
+            movie_titles = '\n'.join([f"🎞️ {movie}" for movie in movie_list])  # Aggiungi un'icona a ogni titolo
+            dispatcher.utter_message(
+                text=f"🎥 The movies made by {director} are:\n{movie_titles}"
+            )
+        else:
+            dispatcher.utter_message(
+                text=f"😔 I'm sorry, I couldn't find any films by {director} or {new_name} in my database."
+            )
+        
+        return [SlotSet('director', None)]
+
+
+class ActionAskActor(Action):
+    def name(self) -> str:
+        return "action_movies_by_actor"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        # Ottieni il valore dello slot 'actor'
+        actor_name = tracker.get_slot("actor")
+        original_actor_name = actor_name  # Per mantenere il valore originale
+
+        if not actor_name:
+            dispatcher.utter_message(text="I couldn't catch the name of the actor. Can you repeat it?")
+            return [SlotSet('actor', None)]
+
+        # Cerca i film in cui l'attore appare in uno dei ruoli (Star1, Star2, Star3, Star4)
+        actor_movies = movies_df[
+            (movies_df['Star1'].str.contains(actor_name, case=False, na=False)) |
+            (movies_df['Star2'].str.contains(actor_name, case=False, na=False)) |
+            (movies_df['Star3'].str.contains(actor_name, case=False, na=False)) |
+            (movies_df['Star4'].str.contains(actor_name, case=False, na=False))
+        ]
+
+        if actor_movies.empty:
+            # Utilizziamo il fuzzy matching per correggere eventuali errori
+            all_actors = (
+                movies_df['Star1'].dropna().tolist() +
+                movies_df['Star2'].dropna().tolist() +
+                movies_df['Star3'].dropna().tolist() +
+                movies_df['Star4'].dropna().tolist()
+            )
+            all_actors = list(set(all_actors))  # Eliminiamo i duplicati
+            corrected_name, score = process.extractOne(actor_name, all_actors)
+
+            if score > 85:  # Soglia per considerare una correzione accettabile
+                actor_name = corrected_name
+                dispatcher.utter_message(text=f"Did you mean '{actor_name}'? Don't worry, I've found the information for you! 😊")
+                # Ricerchiamo di nuovo con il nome corretto
+                actor_movies = movies_df[
+                    (movies_df['Star1'].str.contains(actor_name, case=False, na=False)) |
+                    (movies_df['Star2'].str.contains(actor_name, case=False, na=False)) |
+                    (movies_df['Star3'].str.contains(actor_name, case=False, na=False)) |
+                    (movies_df['Star4'].str.contains(actor_name, case=False, na=False))
+                ]
+
+        if not actor_movies.empty:
+            # Troviamo il nome completo dell'attore
+            matching_actors = actor_movies[['Star1', 'Star2', 'Star3', 'Star4']].stack().unique()
+            full_name = next((name for name in matching_actors if actor_name.lower() in name.lower()), actor_name)
+
+            # Creiamo una lista dei film in cui l'attore è apparso
+            movie_list = actor_movies['Series_Title'].tolist()
+            movie_titles = '\n'.join([f"🎬 {movie}" for movie in movie_list])  # Aggiungiamo l'icona a ogni titolo
+            dispatcher.utter_message(text=f"🌟 The films featuring {full_name} are:\n{movie_titles}")
+        else:
+            dispatcher.utter_message(text=f"😔 I'm sorry, I couldn't find any films featuring '{original_actor_name}' or '{actor_name}' in my database.")
+
+        return [SlotSet('actor', None)]
+
+
+class ActionAskMovieInfo(Action):
+    def name(self) -> str:
+        return "action_ask_movie_info"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Ottieni il nome del film dallo slot 'movie'
+        movie_name = tracker.get_slot("movie")
+        first_name = movie_name
+
+        if not movie_name:
+            dispatcher.utter_message(text="I couldn't catch the name of the movie. Can you repeat it?")
+            return [SlotSet('movie', None)]
+
+        # Cerca il film nel database
+        movie_row = movies_df[movies_df['Series_Title'].str.contains(movie_name, case=False, na=False)]
+
+        if movie_row.empty:         
+            new_name, score = process.extractOne(movie_name, movies_df['Series_Title'].tolist())
+            logging.info(f"Somiglianza del {score}")
+            if score > soglia_fuzzy:
+                dispatcher.utter_message("You misspelled the title. Don't worry, I've got it! 😊✨")
+                movie_row = movies_df[movies_df['Series_Title'].str.contains(new_name, case=False, na=False)]
+
+        if not movie_row.empty:
+            # Estrai tutte le informazioni desiderate
+            movie = movie_row.iloc[0]
+            title = movie['Series_Title']
+            genre = movie['Genre']
+            year = movie['Released_Year']
+            rating = movie['IMDB_Rating']
+            overview = movie['Overview']
+            director = movie['Director']
+            stars = movie[['Star1', 'Star2', 'Star3', 'Star4']].dropna().values
+            runtime = movie['Runtime']
+
+            # Costruisci la risposta
+            stars_list = ', '.join(stars) if len(stars) > 0 else "No stars listed."
+
+            response = (
+                f"🎥 Here are the details for the movie '{title}':\n"
+                f"🎭 Genre: {genre}\n"
+                f"⏳ Runtime: {runtime}\n"
+                f"📅 Release Year: {year}\n"
+                f"⭐ Rating: {rating}/10\n"
+                f"🎬 Director: {director}\n"
+                f"🌟 Stars: {stars_list}\n"
+                f"📝 Overview: {overview}"
+            )
+
+
+            dispatcher.utter_message(text=response)
+            dispatcher.utter_message(image=movie['Poster_Link'])
+        else:
+            dispatcher.utter_message(text=f"I'm sorry, I couldn't find any information about the movie '{first_name}' or '{movie_name}' in my database.")
+
+        return [SlotSet('movie', None)]
 
 class ActionCountFilms(Action):
     def name(self) -> str:
@@ -114,6 +347,27 @@ class ActionCountFilms(Action):
                 SlotSet("form_quality", None)]
 
         
+class ActionCheckFormSlots(Action):
+
+    def name(self) -> str:
+        return "action_check_form_slots"
+    
+    def run(self, dispatcher, tracker, domain):
+        # Controlla se gli slot sono stati compilati
+        form_director_genre = tracker.get_slot('form_director_genre')
+        form_quality = tracker.get_slot('form_quality')
+
+        # Se lo slot non è stato fornito, lo settiamo su None
+        if form_director_genre is None:
+            form_director_genre = "None"
+        if form_quality is None:
+            form_quality = "None"
+
+        # Restituire gli eventi
+        return [SlotSet("form_director_genre", form_director_genre),
+                SlotSet("form_quality", form_quality)]
+    
+
 class ActionResetDirectorForm(Action):
     def name(self) -> Text:
         return "action_reset_director_form"
@@ -459,3 +713,21 @@ class ActionResetGrossVotesRecommendationForm(Action):
         logging.info("SONO QUI")
         return [SlotSet("form_votes", None),
                 SlotSet("form_gross", None)]
+    
+
+class ActionRemoveUnnecessarySlots(Action):
+    def name(self) -> Text:
+        return "action_remove_unnecessary_slots"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[SlotSet]:
+        # Definisci gli slot da ignorare
+        logging.info("DENTRO: action_remove_unnecessary_slots")
+        unnecessary_slots = ["form_author", "form_genre", "movie" ]
+
+        # Rimuovi i valori per gli slot non necessari
+        events = []
+        for slot in unnecessary_slots:
+            if tracker.get_slot(slot) is not None:
+                events.append(SlotSet(slot, None))
+        
+        return events
