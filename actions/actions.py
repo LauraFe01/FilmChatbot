@@ -204,6 +204,7 @@ class ActionAskActor(Action):
 
             if score > 85:  # Soglia per considerare una correzione accettabile
                 actor_name = corrected_name
+                logging.info(f"Nome corretto: {actor_name}")
                 dispatcher.utter_message(text=f"Did you mean '{actor_name}'? Don't worry, I've found the information for you! 😊")
                 # Ricerchiamo di nuovo con il nome corretto
                 actor_movies = movies_df[
@@ -215,9 +216,19 @@ class ActionAskActor(Action):
 
         if not actor_movies.empty:
             # Troviamo il nome completo dell'attore
+            logging.info(f"actor name ultimo if: {actor_name}")
             matching_actors = actor_movies[['Star1', 'Star2', 'Star3', 'Star4']].stack().unique()
+            actors_with_same_surname = [name for name in matching_actors if name.split()[-1].lower() == actor_name.split()[-1].lower()]
+            
+            if len(set(actors_with_same_surname)) > 1:
+                actor_list = '\n'.join(actors_with_same_surname)
+                dispatcher.utter_message(
+                    text=f"There are multiple actors with the surname '{actor_name.split()[-1]}'. Please be more specific:\n{actor_list}"
+                )
+                return [SlotSet('actor', None)]
+            
             full_name = next((name for name in matching_actors if actor_name.lower() in name.lower()), actor_name)
-
+            
             # Creiamo una lista dei film in cui l'attore è apparso
             movie_list = actor_movies['Series_Title'].tolist()
             movie_titles = '\n'.join([f"🎬 {movie}" for movie in movie_list])  # Aggiungiamo l'icona a ogni titolo
@@ -226,6 +237,7 @@ class ActionAskActor(Action):
             dispatcher.utter_message(text=f"😔 I'm sorry, I couldn't find any films featuring '{original_actor_name}' or '{actor_name}' in my database.")
 
         return [SlotSet('actor', None)]
+
 
 
 class ActionAskMovieInfo(Action):
