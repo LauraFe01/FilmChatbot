@@ -246,7 +246,7 @@ responses:
         - title: "60.000 💵"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 60000}'
         - title: "150.000 💵"
-          payload: '/pprovide_gross_votes_movie_recommendation{"form_gross": 150000}'
+          payload: '/provide_gross_votes_movie_recommendation{"form_gross": 150000}'
         - title: "500.000 💵"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 500000}'
         - title: "1.000.000 💵"

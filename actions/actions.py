@@ -661,9 +661,9 @@ class ValidateGrossVotesRecommendationForm(FormValidationAction):
         Validates the 'form_votes' slot to ensure it's a positive integer.
         """
         # Verifica che il valore sia un numero intero positivo
-        logging.info(f"Dentro validate_form_votes, form_votes = {value}")
-        logging.info(f"Tipo di value form_votes: {type(value)}")
-        value = str(value)
+        logging.info(f"Dentro validate_form_votes, form_votes = {tracker.get_slot('form_votes')}")
+        logging.info(f"Tipo di value form_votes: {type(tracker.get_slot('form_votes'))}")
+        value = str(tracker.get_slot("form_votes"))
         if re.fullmatch(r"^\d+$", value):  # Valida che sia un numero intero
             try:
                 votes = int(value)
@@ -688,27 +688,29 @@ class ValidateGrossVotesRecommendationForm(FormValidationAction):
         """
         Validates the 'form_gross' slot to ensure it's a positive number (decimal or integer).
         """
-        # Verifica che il valore sia un numero positivo, decimale o intero
-        logging.info(f"Dentro validate_form_gross, form_gross = {value}")
-        logging.info(f"Tipo di value form_gross: {type(value)}")
-        value = str(value)
-        if re.fullmatch(r"^\d+(\.\d+)?$", value):  # Valida che sia un numero positivo (intero o decimale)
-            try:
-                gross = float(value)
-                if gross > 0:
-                    logging.info(f"Valid gross earnings: {gross}")
-                    return {"form_gross": gross}
-                else:
-                    dispatcher.utter_message(text="⚠️ The gross earnings must be a positive number. Please try again.")
-                    logging.error(f"Invalid gross earnings (not positive): {gross}")
-            except ValueError:
-                dispatcher.utter_message(text="⚠️ An unexpected error occurred. Please try again.")
-                logging.error(f"Error parsing gross earnings: {value}")
-        else:
-            dispatcher.utter_message(text="⚠️ Please provide a valid positive number for gross earnings.")
-            logging.error(f"Invalid gross earnings input: {value}")
+        logging.info(f"form_gross: {tracker.get_slot('form_gross')}")
+        return {"form_gross": tracker.get_slot("form_gross")} 
+        # # Verifica che il valore sia un numero positivo, decimale o intero
+        # logging.info(f"Dentro validate_form_gross, form_gross = {value}")
+        # logging.info(f"Tipo di value form_gross: {type(value)}")
+        # value = str(value)
+        # if re.fullmatch(r"^\d+(\.\d+)?$", value):  # Valida che sia un numero positivo (intero o decimale)
+        #     try:
+        #         gross = float(value)
+        #         if gross > 0:
+        #             logging.info(f"Valid gross earnings: {gross}")
+        #             return {"form_gross": gross}
+        #         else:
+        #             dispatcher.utter_message(text="⚠️ The gross earnings must be a positive number. Please try again.")
+        #             logging.error(f"Invalid gross earnings (not positive): {gross}")
+        #     except ValueError:
+        #         dispatcher.utter_message(text="⚠️ An unexpected error occurred. Please try again.")
+        #         logging.error(f"Error parsing gross earnings: {value}")
+        # else:
+        #     dispatcher.utter_message(text="⚠️ Please provide a valid positive number for gross earnings.")
+        #     logging.error(f"Invalid gross earnings input: {value}")
 
-        return {"form_gross": None}  # Resetta lo slot se non è valido
+        # return {"form_gross": None}  # Resetta lo slot se non è valido
 
 class ActionGrossVotesRecommendation(Action):
     def name(self) -> Text:
