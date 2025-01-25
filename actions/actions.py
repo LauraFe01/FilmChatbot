@@ -45,7 +45,7 @@ class ActionListTopMovies(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # Ottieni i 5 film con il rating più alto
-        top_movies = movies_df.sort_values(by="IMDB_Rating", ascending=False).head(5)
+        top_movies = movies_df.sort_values(by="IMDB_Rating", ascending=False).head(10)
 
         response = "🎬 Here are the top-rated movies in IMDB:\n\n"
         response += "\n".join([
@@ -550,7 +550,7 @@ class ActionProvideMovieRecommendation(Action):
                 (movies_df["Released_Year"] >= min_release_year if min_release_year else True)
                 & (movies_df["Genre"].str.contains(genre, case=False, na=False) if genre else True)
                 & (movies_df["IMDB_Rating"] >= min_rating if min_rating else True)
-            ].head(5)
+            ].head(10)
             return filtered_movies
 
     def reset_slots(self):
@@ -582,6 +582,7 @@ class ValidateMovieRecommendationForm(FormValidationAction):
     async def validate_min_release_year(
         self, value, dispatcher, tracker, domain
     ) -> Dict[Text, Any]:
+        logging.info(f"anno detect: {tracker.get_slot('min_release_year')}")
         return {"min_release_year": tracker.get_slot("min_release_year")}
 
     async def validate_form_genre(
@@ -740,10 +741,10 @@ class ActionGrossVotesRecommendation(Action):
             (movies_df['Gross'] >= gross_threshold)
         ].dropna(subset=['Series_Title', 'No_of_Votes', 'Gross'])  # Rimuove righe con dati mancanti
 
-        filtered_movies = filtered_movies.head(5)
+        filtered_movies = filtered_movies.head(10)
         
         if not filtered_movies.empty:
-            dispatcher.utter_message(text="🎥 Here are the top 5 films that match your criteria:")
+            dispatcher.utter_message(text="🎥 Here are the top 10 films that match your criteria:")
             for _, movie in filtered_movies.iterrows():
                 message = (
                     f"• {movie['Series_Title']}\n"
