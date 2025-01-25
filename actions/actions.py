@@ -150,10 +150,11 @@ class ActionAskDirector(Action):
         
         if dir_movies.empty:
             new_name, score = process.extractOne(director, director_df.tolist())
+            logging.info(f"score action_movies_by_director: {score}")
             if score > soglia_fuzzy:
                 dispatcher.utter_message("You misspelled the name of the director. Don't worry, I've got it! 😊✨")
                 dir_movies = movies_df[movies_df['Director'].str.contains(new_name, case=False, na=False)]
-
+                logging.info(f"dir movies: {dir_movies}")
 
         if not dir_movies.empty:
             # Creiamo una lista dei film del regista trovato
@@ -200,7 +201,13 @@ class ActionAskActor(Action):
                 movies_df['Star4'].dropna().tolist()
             )
             all_actors = list(set(all_actors))  # Eliminiamo i duplicati
-            corrected_name, score = process.extractOne(actor_name, all_actors)
+            if len(actor_name.split())>1:
+                corrected_name, score = process.extractOne(actor_name, all_actors)
+                logging.info(f"Nome/cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
+            elif len(actor_name.split())==1:
+                all_actor_surname = [" ".join(s.split()[1:]) if len(s.split()) > 1 else "" for s in all_actors]
+                corrected_name, score = process.extractOne(actor_name, all_actor_surname)
+                logging.info(f"Cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
 
             if score > 85:  # Soglia per considerare una correzione accettabile
                 actor_name = corrected_name
