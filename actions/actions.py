@@ -203,15 +203,15 @@ class ActionAskActor(Action):
             all_actors = list(set(all_actors))  # Eliminiamo i duplicati
             if len(actor_name.split())>1:
                 corrected_name, score = process.extractOne(actor_name, all_actors)
-                logging.info(f"Nome/cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
+                #logging.info(f"Nome/cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
             elif len(actor_name.split())==1:
                 all_actor_surname = [" ".join(s.split()[1:]) if len(s.split()) > 1 else "" for s in all_actors]
                 corrected_name, score = process.extractOne(actor_name, all_actor_surname)
-                logging.info(f"Cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
+                #logging.info(f"Cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
 
             if score > 85:  # Soglia per considerare una correzione accettabile
                 actor_name = corrected_name
-                logging.info(f"Nome corretto: {actor_name}")
+                #logging.info(f"Nome corretto: {actor_name}")
                 dispatcher.utter_message(text=f"Did you mean '{actor_name}'? Don't worry, I've found the information for you! 😊")
                 # Ricerchiamo di nuovo con il nome corretto
                 actor_movies = movies_df[
@@ -223,14 +223,15 @@ class ActionAskActor(Action):
 
         if not actor_movies.empty:
             # Troviamo il nome completo dell'attore
-            logging.info(f"actor name ultimo if: {actor_name}")
+            #logging.info(f"actor name ultimo if: {actor_name}")
             matching_actors = actor_movies[['Star1', 'Star2', 'Star3', 'Star4']].stack().unique()
             actors_with_same_surname = [name for name in matching_actors if name.split()[-1].lower() == actor_name.split()[-1].lower()]
             
             if len(set(actors_with_same_surname)) > 1:
-                actor_list = '\n'.join(actors_with_same_surname)
+                #actor_list = '\n'.join(actors_with_same_surname)
                 dispatcher.utter_message(
-                    text=f"There are multiple actors with the surname '{actor_name.split()[-1]}'. Please be more specific:\n{actor_list}"
+                    text=f"There are multiple actors with the surname '{actor_name.split()[-1]}'. Please be more specific:\n" +
+                        "\n".join([f"👤 {actor}" for actor in actors_with_same_surname])
                 )
                 return [SlotSet('actor', None)]
             
