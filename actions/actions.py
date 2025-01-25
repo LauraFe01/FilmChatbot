@@ -513,7 +513,9 @@ class ActionProvideMovieRecommendation(Action):
 
         # Se 'genre' è una lista di generi, uniscili in un'unica stringa
         if isinstance(genre, list):
-            genre = "|".join(genre)  # Uso del simbolo '|' per fare il match su uno o più generi
+            #genre = "|".join(genre)  # Uso del simbolo '|' per fare il match su uno o più generi
+            genre = "".join(f"(?=.*{genree})" for genree in genre)
+            logging.info(f"genre detected:  {genre}")
 
         # Filtra i film dal DataFrame basandosi sugli slot
         filtered_movies = self.filter_movies(min_release_year, genre, min_rating)
@@ -813,3 +815,8 @@ class ActionResumeFormGrossMovie(Action):
         # Riattiva il ciclo della form senza resettare gli slot
         dispatcher.utter_message(text="🔄 Let's pick up where we left off! 😊")
         return [ActiveLoop("gross_votes_recommendation_form")]
+    
+
+
+
+
