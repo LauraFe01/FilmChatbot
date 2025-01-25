@@ -149,19 +149,45 @@ class ActionAskDirector(Action):
         dir_movies = movies_df[movies_df['Director'].str.contains(director, case=False, na=False)]
         
         if dir_movies.empty:
-            new_name, score = process.extractOne(director, director_df.tolist())
-            logging.info(f"score action_movies_by_director: {score}")
+            if len(director.split()) > 1:
+                new_name, score = process.extractOne(director, director_df.tolist())
+                director = new_name
+                logging.info(f"NOme/Cognome sbagliato: {director}, corretto: {new_name}")
+            elif len(director.split()) == 1:
+                new_name, score = process.extractOne(director, [s.split()[-1] if len(s.split()) > 1 else "" for s in director_df.tolist()])
+                director = new_name
+                logging.info(f"Cognome sbagliato: {director}, corretto: {new_name}")
+
             if score > soglia_fuzzy:
-                dispatcher.utter_message("You misspelled the name of the director. Don't worry, I've got it! 😊✨")
+                dispatcher.utter_message(text=f"Did you mean '{director}'? Don't worry, I've found the information for you! 😊")
                 dir_movies = movies_df[movies_df['Director'].str.contains(new_name, case=False, na=False)]
-                logging.info(f"dir movies: {dir_movies}")
+                #logging.info(f"dir movies: {dir_movies}")
 
         if not dir_movies.empty:
             # Creiamo una lista dei film del regista trovato
+            matching_directors = dir_movies[['Director']].stack().unique()
+            logging.info(f"matching_directors: {matching_directors}")
+            director_with_same_surname = [name for name in matching_directors if name.split()[-1].lower() == director.split()[-1].lower()]
+            logging.info(f"director_with_same_surname: {director_with_same_surname}")
+
+            if len(director_with_same_surname) == 0:
+                dispatcher.utter_message(text="Wait a moment 🤔. You need to provide either the full name or just the last word of the name (surname).")
+                return [SlotSet('director', None)]
+            
+            if len(set(director_with_same_surname)) > 1:
+                #actor_list = '\n'.join(actors_with_same_surname)
+                dispatcher.utter_message(
+                    text=f"There are multiple directors with the surname '{director.split()[-1]}'. Please be more specific:\n" +
+                        "\n".join([f"👤 {director}" for director in director_with_same_surname])
+                )
+                return [SlotSet('director', None)]
+            
+            full_name = next((name for name in matching_directors if director.lower() in name.lower()), director)
+
             movie_list = dir_movies['Series_Title'].tolist()
             movie_titles = '\n'.join([f"🎞️ {movie}" for movie in movie_list])  # Aggiungi un'icona a ogni titolo
             dispatcher.utter_message(
-                text=f"🎥 The movies made by {director} are:\n{movie_titles}"
+                text=f"🎥 The movies made by {full_name} are:\n{movie_titles}"
             )
         else:
             dispatcher.utter_message(
@@ -179,7 +205,7 @@ class ActionAskActor(Action):
         # Ottieni il valore dello slot 'actor'
         actor_name = tracker.get_slot("actor")
         original_actor_name = actor_name  # Per mantenere il valore originale
-
+        logging.info(f"actor_name: {actor_name}")
         if not actor_name:
             dispatcher.utter_message(text="I couldn't catch the name of the actor. Can you repeat it?")
             return [SlotSet('actor', None)]
@@ -203,15 +229,16 @@ class ActionAskActor(Action):
             all_actors = list(set(all_actors))  # Eliminiamo i duplicati
             if len(actor_name.split())>1:
                 corrected_name, score = process.extractOne(actor_name, all_actors)
-                #logging.info(f"Nome/cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
+                logging.info(f"Nome/cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
             elif len(actor_name.split())==1:
-                all_actor_surname = [" ".join(s.split()[1:]) if len(s.split()) > 1 else "" for s in all_actors]
+                all_actor_surname = [s.split()[-1] if len(s.split()) > 1 else "" for s in all_actors]
+                logging.info(all_actor_surname)
                 corrected_name, score = process.extractOne(actor_name, all_actor_surname)
-                #logging.info(f"Cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
+                logging.info(f"Cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
 
             if score > 85:  # Soglia per considerare una correzione accettabile
                 actor_name = corrected_name
-                #logging.info(f"Nome corretto: {actor_name}")
+                logging.info(f"Nome corretto: {actor_name}")
                 dispatcher.utter_message(text=f"Did you mean '{actor_name}'? Don't worry, I've found the information for you! 😊")
                 # Ricerchiamo di nuovo con il nome corretto
                 actor_movies = movies_df[
@@ -225,7 +252,14 @@ class ActionAskActor(Action):
             # Troviamo il nome completo dell'attore
             #logging.info(f"actor name ultimo if: {actor_name}")
             matching_actors = actor_movies[['Star1', 'Star2', 'Star3', 'Star4']].stack().unique()
-            actors_with_same_surname = [name for name in matching_actors if name.split()[-1].lower() == actor_name.split()[-1].lower()]
+            logging.info(f"type matching_actors: {type(matching_actors)}")
+            actors_with_same_surname = [
+                name for name in matching_actors 
+                if name.split()[-1].lower() == actor_name.split()[-1].lower()
+            ]
+            if len(actors_with_same_surname) == 0:
+                dispatcher.utter_message(text="Wait a moment 🤔. You need to provide either the full name or just the last word of the name (surname).")
+                return [SlotSet('actor', None)]
             
             if len(set(actors_with_same_surname)) > 1:
                 #actor_list = '\n'.join(actors_with_same_surname)

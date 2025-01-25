@@ -180,6 +180,9 @@ nlu:
     - Which movies belong to [Sergio Leone](director)?
     - What has [Akira Kurosawa](director) directed?
     - Movies by [David Fincher](director), please.
+    - Can you tell me the movies made by [Gus Van Sant](director)?
+    - What films were directed by [Brian De Palma](director)?
+    - I'd like to know the movies by [Florian Henckel von Donnersmarck](director)?
 
 - intent: ask_movies_by_actor
   examples: |
@@ -208,6 +211,10 @@ nlu:
     - Can you tell me all the films of [Jessica Chastain](actor)?
     - Which films did [Bradley Cooper](actor) star in?
     - Tell me about the movies starring [Charlize Theron](actor).
+    - In which movies did [Robert De Niro](actor) act?
+    - Can you tell me the films featuring [Samuel L. Jackson](actor)?
+    - Which movies has [Lee Van Cleef](actor) appeared in?
+    - What are the films starring [Michael Clarke Duncan](actor)?
 
 - intent: ask_movie_info
   examples: |
