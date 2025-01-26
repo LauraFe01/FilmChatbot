@@ -28,7 +28,7 @@ movies = movies_df['Series_Title'].unique()
 valid_genre = ['Drama', 'Crime', 'Action', 'Adventure', 'Biography', 'History', 'Sci-Fi',
  'Romance', 'Western', 'Fantasy', 'Comedy', 'Thriller', 'Animation', 'Family',
  'War', 'Mystery', 'Music', 'Horror', 'Musical', 'Film-Noir', 'Sport']
-soglia_fuzzy = 80
+soglia_fuzzy = 70
 
 class ActionAskClarification(Action):
     def name(self):
@@ -168,7 +168,7 @@ class ActionAskDirector(Action):
             matching_directors = dir_movies[['Director']].stack().unique()
             logging.info(f"matching_directors: {matching_directors}")
             director_with_same_surname = [name for name in matching_directors if name.split()[-1].lower() == director.split()[-1].lower()]
-            logging.info(f"director_with_same_surname: {director_with_same_surname}")
+            logging.info(f"action_movies_by_actor - len director_with_same_surname: {len(director_with_same_surname)}")
 
             if len(director_with_same_surname) == 0:
                 dispatcher.utter_message(text="Wait a moment 🤔. You need to provide either the full name or just the last word of the name (surname).")
@@ -191,7 +191,7 @@ class ActionAskDirector(Action):
             )
         else:
             dispatcher.utter_message(
-                text=f"😔 I'm sorry, I couldn't find any films by {director} or {new_name} in my database."
+                text=f"😔 I'm sorry, I couldn't find any films by {tracker.get_slot('director')} or {new_name} in my database."
             )
         
         return [SlotSet('director', None)]
@@ -236,7 +236,7 @@ class ActionAskActor(Action):
                 corrected_name, score = process.extractOne(actor_name, all_actor_surname)
                 logging.info(f"Cognome attore sbagliato: {actor_name}, corretto: {corrected_name}")
 
-            if score > 85:  # Soglia per considerare una correzione accettabile
+            if score > soglia_fuzzy:  # Soglia per considerare una correzione accettabile
                 actor_name = corrected_name
                 logging.info(f"Nome corretto: {actor_name}")
                 dispatcher.utter_message(text=f"Did you mean '{actor_name}'? Don't worry, I've found the information for you! 😊")
@@ -264,7 +264,7 @@ class ActionAskActor(Action):
             if len(set(actors_with_same_surname)) > 1:
                 #actor_list = '\n'.join(actors_with_same_surname)
                 dispatcher.utter_message(
-                    text=f"There are multiple actors with the surname '{actor_name.split()[-1]}'. Please be more specific:\n" +
+                    text=f"There are multiple actors with the surname '{actor_name.split()[-1]}'. Please be more specific and try again:\n" +
                         "\n".join([f"👤 {actor}" for actor in actors_with_same_surname])
                 )
                 return [SlotSet('actor', None)]
@@ -349,23 +349,61 @@ class ActionCountFilms(Action):
 
         # Verifica se il nome del regista è presente nel database
         all_directors = movies_df['Director'].unique()
-        best_match, score = process.extractOne(form_author, all_directors, scorer=process.fuzz.partial_ratio)
+        filtered_movies = movies_df[movies_df['Director'].str.contains(form_author, case=False, na=False)]
+        logging.info(f"action_count_film - nome director inizio: {form_author} ")
+        if filtered_movies.empty:
+            if len(form_author.split()) > 1:
+                new_name, score = process.extractOne(form_author, all_directors)
+                form_author = new_name
+                logging.info(f"NOme/Cognome sbagliato: {tracker.get_slot('form_author')}, corretto: {new_name}")
+            elif len(form_author.split()) == 1:
+                new_name, score = process.extractOne(form_author, [s.split()[-1] if len(s.split()) > 1 else "" for s in all_directors.tolist()])
+                form_author = new_name
+                logging.info(f"Cognome sbagliato: {tracker.get_slot('form_author')}, corretto: {new_name}")
+            
+            logging.info(f"action_count_film - score: {score}")
+            logging.info(f"action_count_film - confronto: {[s.split()[-1] if len(s.split()) > 1 else '' for s in all_directors.tolist()][:10]}")
+            if score > soglia_fuzzy:
+                dispatcher.utter_message(text=f"Did you mean '{form_author}'? Don't worry, I've found the information for you! 😊")
+                filtered_movies = movies_df[movies_df['Director'].str.contains(form_author, case=False, na=False)]
+                #logging.info(f"dir movies: {dir_movies}")
+            else:
+                dispatcher.utter_message(
+                    text=f"😔 Sorry, no director matching '{form_author}' was found."
+                )
+                return [SlotSet("form_author", None), SlotSet("form_quality", None)]
+        
+        if not filtered_movies.empty:
+                    # Caso in cui si sono piu autori che hanno lo stesso cognome(ultima parte del nominativo)
+            matching_directors = filtered_movies[['Director']].stack().unique()
+            director_with_same_surname = [name for name in matching_directors if name.split()[-1].lower() == form_author.split()[-1].lower()]
+            logging.info(f"director_with_same_surname: {director_with_same_surname}")
 
-        if score >= soglia_fuzzy:  # Considera solo corrispondenze con un punteggio >= 80
-            matched_author = best_match
-        else:
-            dispatcher.utter_message(
-                text=f"😔 Sorry, no director matching '{form_author}' was found."
-            )
-            return [SlotSet("form_author", None), SlotSet("form_quality", None)]
+            if len(director_with_same_surname) == 0:
+                dispatcher.utter_message(text="Wait a moment 🤔. You need to provide either the full name or just the last word of the name (surname).")
+                return [SlotSet("form_author", None), SlotSet("form_quality", None)]
+            
+            logging.info(f"action_count_film - len(set(director_with_same_surname)): {len(set(director_with_same_surname))}")
+            if len(set(director_with_same_surname)) > 1:
+                #actor_list = '\n'.join(actors_with_same_surname)
+                dispatcher.utter_message(
+                    text=f"There are multiple directors with the surname '{form_author.split()[-1]}'. Please be more specific and try again:\n" +
+                        "\n".join([f"👤 {directorr}" for directorr in director_with_same_surname])
+                )
+                return [SlotSet("form_author", None), SlotSet("form_quality", None)]
+
+        
+        full_name = next((name for name in matching_directors if form_author.lower() in name.lower()), form_author)
 
         if form_quality == "none":
             # Filtra solo per il regista trovato
-            filtered_movies = movies_df[movies_df['Director'] == matched_author]
+            filtered_movies = movies_df[movies_df['Director'] == full_name]
+            
             num_films = len(filtered_movies)
             if not filtered_movies.empty:
+                filtered_movies = filtered_movies.sort_values(by=['IMDB_Rating'], ascending=[False])
                 dispatcher.utter_message(
-                    text=f"🎬 The number of films by {matched_author} are {num_films}.\n"
+                    text=f"🎬 The number of films by {full_name} are {num_films}.\n"
                 )
                 for _, row in filtered_movies.iterrows():
                     dispatcher.utter_message(
@@ -385,6 +423,7 @@ class ActionCountFilms(Action):
             ]
             num_films = len(filtered_movies)
             if not filtered_movies.empty:
+                filtered_movies = filtered_movies.sort_values(by=['IMDB_Rating'], ascending=[False])
                 dispatcher.utter_message(
                     text=f"🎥 The number of films by {matched_author} with a rating higher than {form_quality} are {num_films}."
                 )
