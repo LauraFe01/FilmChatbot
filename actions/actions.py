@@ -351,7 +351,7 @@ class ActionCountFilms(Action):
         all_directors = movies_df['Director'].unique()
         best_match, score = process.extractOne(form_author, all_directors, scorer=process.fuzz.partial_ratio)
 
-        if score >= 80:  # Considera solo corrispondenze con un punteggio >= 80
+        if score >= soglia_fuzzy:  # Considera solo corrispondenze con un punteggio >= 80
             matched_author = best_match
         else:
             dispatcher.utter_message(
@@ -551,6 +551,7 @@ class ActionProvideMovieRecommendation(Action):
                 & (movies_df["Genre"].str.contains(genre, case=False, na=False) if genre else True)
                 & (movies_df["IMDB_Rating"] >= min_rating if min_rating else True)
             ].head(10)
+            filtered_movies = filtered_movies.sort_values(by=['Released_Year', 'IMDB_Rating'], ascending=[False, False])
             return filtered_movies
 
     def reset_slots(self):
@@ -661,14 +662,14 @@ class ValidateGrossVotesRecommendationForm(FormValidationAction):
         Validates the 'form_votes' slot to ensure it's a positive integer.
         """
         # Verifica che il valore sia un numero intero positivo
-        logging.info(f"Dentro validate_form_votes, form_votes = {tracker.get_slot('form_votes')}")
-        logging.info(f"Tipo di value form_votes: {type(tracker.get_slot('form_votes'))}")
+        #logging.info(f"Dentro validate_form_votes, form_votes = {tracker.get_slot('form_votes')}")
+        #logging.info(f"Tipo di value form_votes: {type(tracker.get_slot('form_votes'))}")
         value = str(tracker.get_slot("form_votes"))
         if re.fullmatch(r"^\d+$", value):  # Valida che sia un numero intero
             try:
                 votes = int(value)
                 if votes > 0:
-                    logging.info(f"Valid votes count: {votes}")
+                    #logging.info(f"Valid votes count: {votes}")
                     return {"form_votes": votes}
                 else:
                     dispatcher.utter_message(text="⚠️ The number of votes must be a positive integer. Please try again.")
@@ -744,7 +745,7 @@ class ActionGrossVotesRecommendation(Action):
         ].dropna(subset=['Series_Title', 'No_of_Votes', 'Gross'])  # Rimuove righe con dati mancanti
 
         filtered_movies = filtered_movies.head(10)
-        
+        filtered_movies = filtered_movies.sort_values(by=['No_of_Votes', 'Gross'], ascending=[False, False])
         if not filtered_movies.empty:
             dispatcher.utter_message(text="🎥 Here are the top 10 films that match your criteria:")
             for _, movie in filtered_movies.iterrows():
