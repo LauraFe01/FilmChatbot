@@ -204,24 +204,24 @@ responses:
   
   \nWhat is the minimum release year for the movie you're looking for? "
     buttons:
-      - title: "1920"
+      - title: " 📅 1920"
         payload: '/provide_min_release_year{"min_release_year": 1920}'
-      - title: "1930"
+      - title: " 📅 1930"
         payload: '/provide_min_release_year{"min_release_year": 1930}'
       
-      - title: "1940"
+      - title: " 📅 1940"
         payload: '/provide_min_release_year{"min_release_year": 1940}'
-      - title: "1950"
+      - title: " 📅 1950"
         payload: '/provide_min_release_year{"min_release_year": 1950}'
       
-      - title: "1960"
+      - title: " 📅 1960"
         payload: '/provide_min_release_year{"min_release_year": 1960}'
-      - title: "1970"
+      - title: " 📅 1970"
         payload: '/provide_min_release_year{"min_release_year": 1970}'
       
-      - title: "1980"
+      - title: " 📅 1980"
         payload: '/provide_min_release_year{"min_release_year": 1980}'
-      - title: "1990"
+      - title: " 📅 1990"
         payload: '/provide_min_release_year{"min_release_year": 1990}'
       
       - title: "2000"

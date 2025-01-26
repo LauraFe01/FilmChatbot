@@ -346,23 +346,23 @@ class ActionCountFilms(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict) -> list:
         form_author = tracker.get_slot("form_author")
         form_quality = tracker.get_slot("form_quality") or "none"
-
+        logging.info(f"ActionCountFilms - form_quality: {form_quality}")
         # Verifica se il nome del regista è presente nel database
         all_directors = movies_df['Director'].unique()
         filtered_movies = movies_df[movies_df['Director'].str.contains(form_author, case=False, na=False)]
-        logging.info(f"action_count_film - nome director inizio: {form_author} ")
+        #logging.info(f"action_count_film - nome director inizio: {form_author} ")
         if filtered_movies.empty:
             if len(form_author.split()) > 1:
                 new_name, score = process.extractOne(form_author, all_directors)
                 form_author = new_name
-                logging.info(f"NOme/Cognome sbagliato: {tracker.get_slot('form_author')}, corretto: {new_name}")
+                #logging.info(f"NOme/Cognome sbagliato: {tracker.get_slot('form_author')}, corretto: {new_name}")
             elif len(form_author.split()) == 1:
                 new_name, score = process.extractOne(form_author, [s.split()[-1] if len(s.split()) > 1 else "" for s in all_directors.tolist()])
                 form_author = new_name
-                logging.info(f"Cognome sbagliato: {tracker.get_slot('form_author')}, corretto: {new_name}")
+                #logging.info(f"Cognome sbagliato: {tracker.get_slot('form_author')}, corretto: {new_name}")
             
-            logging.info(f"action_count_film - score: {score}")
-            logging.info(f"action_count_film - confronto: {[s.split()[-1] if len(s.split()) > 1 else '' for s in all_directors.tolist()][:10]}")
+            #logging.info(f"action_count_film - score: {score}")
+            #logging.info(f"action_count_film - confronto: {[s.split()[-1] if len(s.split()) > 1 else '' for s in all_directors.tolist()][:10]}")
             if score > soglia_fuzzy:
                 dispatcher.utter_message(text=f"Did you mean '{form_author}'? Don't worry, I've found the information for you! 😊")
                 filtered_movies = movies_df[movies_df['Director'].str.contains(form_author, case=False, na=False)]
@@ -502,7 +502,7 @@ class ValidateFilmCountForm(FormValidationAction):
         """
         Validates the 'form_quality' slot to ensure it is a number between 0.0 and 10.0, or allows None.
         """
-        logging.info(f"Validating form_quality: {value}")
+        logging.info(f"validate_form_quality - form_quality: {value}")
         
         # Se il valore è "none" o None, salta la validazione
         if value == "none" or value is None:
