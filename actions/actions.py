@@ -346,7 +346,7 @@ class ActionCountFilms(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict) -> list:
         form_author = tracker.get_slot("form_author")
         form_quality = tracker.get_slot("form_quality") or "none"
-        logging.info(f"ActionCountFilms - form_quality: {form_quality}")
+        #logging.info(f"ActionCountFilms - form_quality: {form_quality}")
         # Verifica se il nome del regista è presente nel database
         all_directors = movies_df['Director'].unique()
         filtered_movies = movies_df[movies_df['Director'].str.contains(form_author, case=False, na=False)]
@@ -374,7 +374,7 @@ class ActionCountFilms(Action):
                 return [SlotSet("form_author", None), SlotSet("form_quality", None)]
         
         if not filtered_movies.empty:
-                    # Caso in cui si sono piu autori che hanno lo stesso cognome(ultima parte del nominativo)
+            # Caso in cui si sono piu autori che hanno lo stesso cognome(ultima parte del nominativo)
             matching_directors = filtered_movies[['Director']].stack().unique()
             director_with_same_surname = [name for name in matching_directors if name.split()[-1].lower() == form_author.split()[-1].lower()]
             logging.info(f"director_with_same_surname: {director_with_same_surname}")
@@ -412,20 +412,20 @@ class ActionCountFilms(Action):
                     )
             else:
                 dispatcher.utter_message(
-                    text=f"😔 Sorry, no films found for {matched_author}."
+                    text=f"😔 Sorry, no films found for {full_name}."
                 )
         else:
             # Filtra per regista trovato e rating minimo
             form_quality = float(form_quality)
             filtered_movies = movies_df[
-                (movies_df['Director'] == matched_author) &
+                (movies_df['Director'] == full_name) &
                 (movies_df['IMDB_Rating'] >= form_quality)
             ]
             num_films = len(filtered_movies)
             if not filtered_movies.empty:
                 filtered_movies = filtered_movies.sort_values(by=['IMDB_Rating'], ascending=[False])
                 dispatcher.utter_message(
-                    text=f"🎥 The number of films by {matched_author} with a rating higher than {form_quality} are {num_films}."
+                    text=f"🎥 The number of films by {full_name} with a rating higher than {form_quality} are {num_films}."
                 )
                 for _, row in filtered_movies.iterrows():
                     dispatcher.utter_message(
@@ -434,7 +434,7 @@ class ActionCountFilms(Action):
                     )
             else:
                 dispatcher.utter_message(
-                    text=f"😔 Sorry, no films by {matched_author} with a rating higher than {form_quality} were found."
+                    text=f"😔 Sorry, no films by {full_name} with a rating higher than {form_quality} were found."
                 )
 
         return [SlotSet("form_author", None),
