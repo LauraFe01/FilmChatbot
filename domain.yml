@@ -224,9 +224,9 @@ responses:
       - title: " 📅 1990"
         payload: '/provide_min_release_year{"min_release_year": 1990}'
       
-      - title: "2000"
+      - title: "📅 2000"
         payload: '/provide_min_release_year{"min_release_year": 2000}'
-      - title: "2010"
+      - title: "📅 2010"
         payload: '/provide_min_release_year{"min_release_year": 2010}'
     button_type: "vertical"
 
