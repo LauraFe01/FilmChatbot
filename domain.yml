@@ -156,9 +156,9 @@ actions:
 responses:
   utter_start:
     - text: "🎉 Welcome! I'm your personal movie assistant 🎥. Here's what I can do for you:
-      \n- 🎬 Personalized recommendations: I can help you find movies based on your preferences (genre, year, rating, and more).
-      \n- 📝 Movie information: I provide details about plots, directors, actors, and genres.
-      \n- 🎥 Movies by director or actor: I list films made by a specific director or featuring a specific actor.
+      \n- 🎬 Personalized recommendations: I can help you finding movies based on your preferences (genre, year, rating, and more).
+      \n- 📝 Movie information: I can provide you details about plots, directors, actors, and genres.
+      \n- 🎥 Movies by director or actor: I can list you films made by a specific director or featuring a specific actor.
       \n- ⭐ Top charts: I can show you the highest-rated movies or current blockbusters.
 
 
@@ -170,10 +170,10 @@ responses:
   utter_capabilities:
     - text: "🎬 Hi! I'm your movie assistant! Here's what I can do for you:
     
-      \n🏆 1. Find the most acclaimed movies
+      \n🏆 1. Finding the most acclaimed movies
       \nℹ️ 2. Provide information about specific movies
-      \n🎥 3. Find movies by director
-      \n🌟 4. Find movies by actor
+      \n🎥 3. Finding movies by director
+      \n🌟 4. Finding movies by actor
       \n🎭 5. Tell you about movie genres
       \n🎯 6. Give you personalized movie recommendations based on your preferences
       \n📊 7. Count films by director

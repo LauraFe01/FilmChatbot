@@ -393,38 +393,38 @@ nlu:
     - [action](form_genre)
     - [comedy](form_genre)
     - I want to watch a [horror](form_genre) movie.
-    - Show me some [science fiction](form_genre) films.
-    - I prefer [romantic](form_genre) movies.
+    - Show me some [sci-fi](form_genre) films.
+    - I prefer [Romance](form_genre) movies.
     - [drama](form_genre)
     - I’m in the mood for a [thriller](form_genre).
     - [adventure](form_genre)
     - [fantasy](form_genre)
     - [mystery](form_genre).
-    - What about a [Psychological](form_genre) thriller?
+    - What about a [western](form_genre) thriller?
     - Do you have suggestions for [Sports](form_genre) films?
-    - I want to watch a [Legal](form_genre) drama.
-    - [Political](form_genre)
-    - Give me a [Classic](form_genre) movie.
-    - Do you have [Independent](form_genre) film suggestions?
-    - How about a [Dark Comedy](form_genre)?
-    - Show me [Experimental](form_genre) movies.
+    - I want to watch a [romance](form_genre) drama.
+    - [sport](form_genre)
+    - Give me a [musical](form_genre) movie.
+    - Do you have [Biography](form_genre) film suggestions?
+    - How about a [biography](form_genre)?
+    - Show me [family](form_genre) movies.
     - Let’s go for [Sci-Fi](form_genre).
     - [Fantasy Adventure](form_genre)
-    - I’d like a [Mystery Thriller](form_genre).
-    - Suggest a [Romantic Comedy](form_genre).
-    - Can I see some [Epic](form_genre) films?
+    - I’d like a [History](form_genre).
+    - Suggest a [animation](form_genre).
+    - Can I see some [war](form_genre) films?
     - I want a [comedy](form_genre) and [action](form_genre) movie.
     - Show me films that are both [horror](form_genre) and [fantasy](form_genre).
-    - Can you recommend a [drama](form_genre) and [romantic](form_genre) film?
+    - Can you recommend a [drama](form_genre) and [sci-fi](form_genre) film?
     - I’m in the mood for a [mystery](form_genre) or [thriller](form_genre) movie.
-    - Give me a [comedy](form_genre) or [romantic comedy](form_genre) movie.
-    - Find me a [science fiction](form_genre) and [adventure](form_genre) film.
+    - Give me a [film-noir](form_genre) or [romance comedy](form_genre) movie.
+    - Find me a [music](form_genre) and [adventure](form_genre) film.
     - Show me movies that are a combination of [action](form_genre) and [thriller](form_genre).
-    - Do you have [romantic](form_genre) or [drama](form_genre) suggestions?
-    - How about a [mystery](form_genre) and [psychological](form_genre) thriller?
-    - Suggest a [comedy](form_genre) and [horror](form_genre) film.
-    - Show me films with [romantic](form_genre), [drama](form_genre), and [adventure](form_genre) genres.
-    - I want to watch a [political](form_genre), [drama](form_genre), and [comedy](form_genre) movie.
+    - Do you have [War](form_genre) or [drama](form_genre) suggestions?
+    - How about a [mystery](form_genre) and [Music](form_genre) thriller?
+    - Suggest a [Sport](form_genre) and [horror](form_genre) film.
+    - Show me films with [animation](form_genre), [drama](form_genre), and [adventure](form_genre) genres.
+    - I want to watch a [Crime](form_genre), [drama](form_genre), and [comedy](form_genre) movie.
 
 - intent: provide_gross_votes_movie_recommendation
   examples: |

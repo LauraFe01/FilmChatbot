@@ -407,7 +407,7 @@ class ActionCountFilms(Action):
                 )
                 for _, row in filtered_movies.iterrows():
                     dispatcher.utter_message(
-                        text=f"🎞️ *Film: {row['Series_Title']}\n⭐ Rating: {row['IMDB_Rating']}",
+                        text=f"🎞️ Movie: {row['Series_Title']}\n⭐ Rating: {row['IMDB_Rating']}",
                         image=row['Poster_Link']
                     )
             else:
@@ -544,6 +544,7 @@ class ActionProvideMovieRecommendation(Action):
         min_release_year = tracker.get_slot("min_release_year")
         genre = tracker.get_slot("form_genre")  # Questo è ora una lista
         min_rating = tracker.get_slot("form_quality")
+        logging.info(f"GENERE subito {genre}")
 
         # Controlla che tutti gli slot siano stati compilati
         if not (min_release_year and genre and min_rating):
@@ -592,6 +593,7 @@ class ActionProvideMovieRecommendation(Action):
             ].head(10)
             filtered_movies = filtered_movies.sort_values(by=['Released_Year', 'IMDB_Rating'], ascending=[False, False])
             return filtered_movies
+
 
     def reset_slots(self):
         """
