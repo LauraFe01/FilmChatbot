@@ -302,7 +302,7 @@ class ActionAskMovieInfo(Action):
             new_name, score = process.extractOne(movie_name, movies_df['Series_Title'].tolist())
             logging.info(f"Somiglianza del {score}")
             if score > soglia_fuzzy:
-                dispatcher.utter_message("You misspelled the title. Don't worry, I've got it! 😊✨")
+                dispatcher.utter_message(f"You misspelled the title. Don't worry, I've got it! You mean {new_name} 😊✨")
                 movie_row = movies_df[movies_df['Series_Title'].str.contains(new_name, case=False, na=False)]
 
         if not movie_row.empty:
@@ -321,7 +321,8 @@ class ActionAskMovieInfo(Action):
             stars_list = ', '.join(stars) if len(stars) > 0 else "No stars listed."
 
             response = (
-                f"🎥 Here are the details for the movie '{title}':\n"
+                f"🎥 Here are the details for the movie with the best matches'\n"
+                f"📽️ Title: {title}\n"
                 f"🎭 Genre: {genre}\n"
                 f"⏳ Runtime: {runtime}\n"
                 f"📅 Release Year: {year}\n"
