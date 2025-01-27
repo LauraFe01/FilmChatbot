@@ -488,9 +488,19 @@ class ValidateFilmCountForm(FormValidationAction):
             if re.search(r"\d", value):  # Se contiene numeri
                 dispatcher.utter_message(text="⚠️ The author's name should not contain numbers. Please try again.")
                 logging.error(f"Invalid author input: {value}. It contains numbers.")
+
+                if tracker.get_slot("form_quality") is not None:
+                    dispatcher.utter_message(text="❌ Please provide one slot at a time")
+                    return {"form_quality": None, "form_author": value}
+                
                 return {"form_author": None}  # Reset the slot if it contains numbers
             else:
                 logging.info(f"Valid author: {value}")
+
+                if tracker.get_slot("form_quality") is not None:
+                    dispatcher.utter_message(text="❌ Please provide one slot at a time")
+                    return {"form_quality": None, "form_author": value}
+                
                 return {"form_author": value}
         else:
             dispatcher.utter_message(text="⚠️ Please provide a valid author name.")
@@ -505,6 +515,10 @@ class ValidateFilmCountForm(FormValidationAction):
         """
         logging.info(f"validate_form_quality - form_quality: {value}")
         
+        if tracker.get_slot("form_author") is None:
+            dispatcher.utter_message(text="❌ Please provide a single slot.")
+            return {"form_quality": None}
+
         # Se il valore è "none" o None, salta la validazione
         if value == "none" or value is None:
             logging.info("Rating is optional, skipping validation.")
@@ -635,6 +649,10 @@ class ValidateMovieRecommendationForm(FormValidationAction):
         logging.info(f"Dentro validate_form_genre, form_genre: {value}")
         valid_genres = [g.lower() for g in valid_genre]
         
+        if tracker.get_slot("form_quality") is not None:
+            dispatcher.utter_message(text="❌ Please provide a single slot.")
+            return {"form_quality": None}
+
         # Se 'value' è già una lista, controlla ogni elemento
         if isinstance(value, list):
             genres = [genre.strip().lower() for genre in value]
@@ -664,6 +682,10 @@ class ValidateMovieRecommendationForm(FormValidationAction):
         """
         logging.info(f"Validating form_quality: {value}")
         
+        if tracker.get_slot("form_genre") is None:
+            dispatcher.utter_message(text="❌ Please provide the genre before entering the rating.")
+            return {"form_quality": None}
+
         # Se il valore è "none" o None, salta la validazione
         if value == "none" or value is None:
             logging.info("Rating is optional, skipping validation.")
