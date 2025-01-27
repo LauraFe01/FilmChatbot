@@ -241,7 +241,7 @@ responses:
   - text: "🎥 The world is full of amazing films! 🌍 Use the number of votes as a filter to find the most popular ones. 📝 \nPlease provide me with the number of votes for which you want to filter the movies"
 
   utter_ask_form_gross:
-    - text: "💰 Much better! Give me one more hand, please. \nWe also filter based on film box office income. \nPlease select the numberò. I'm schematic. 📊"
+    - text: "💰 Much better! Give me one more hand, please. \nWe also filter based on film box office income. \nPlease select the number. I'm schematic. 📊"
       buttons:
         - title: "1.000.000 💵"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 1000000}'
