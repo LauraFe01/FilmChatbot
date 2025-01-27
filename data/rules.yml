@@ -178,6 +178,14 @@ rules:
     - action: film_count_form
     - active_loop: film_count_form
 
+- rule: Handle start chat during film count form
+  condition:
+    - active_loop: film_count_form
+  steps:
+    - intent: start_chat
+    - action: utter_no_form_in_form
+    - action: action_resume_form_movie_count
+
 
 - rule: Handle ask director intents during film count form
   condition:
@@ -240,6 +248,14 @@ rules:
     - active_loop: film_count_form
   steps:
     - intent: provide_movie_recommendation
+    - action: utter_no_form_in_form
+    - action: action_resume_form_movie_count
+
+- rule: Handle start chat intent during film count form
+  condition:
+    - active_loop: film_count_form
+  steps:
+    - intent: start_chat
     - action: utter_no_form_in_form
     - action: action_resume_form_movie_count
 
@@ -334,4 +350,10 @@ rules:
     - action: utter_no_form_in_form
     - action: action_resume_form_movie_gross
 
-
+- rule: Handle start intent during gross movie form
+  condition:
+    - active_loop: gross_votes_recommendation_form
+  steps:
+    - intent: start_chat
+    - action: utter_no_form_in_form
+    - action: action_resume_form_movie_gross

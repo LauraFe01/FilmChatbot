@@ -321,7 +321,7 @@ class ActionAskMovieInfo(Action):
             stars_list = ', '.join(stars) if len(stars) > 0 else "No stars listed."
 
             response = (
-                f"🎥 Here are the details for the movie with the best matches'\n"
+                f"🎥 Here are the details for the movie with the best matching'\n"
                 f"📽️ Title: {title}\n"
                 f"🎭 Genre: {genre}\n"
                 f"⏳ Runtime: {runtime}\n"
