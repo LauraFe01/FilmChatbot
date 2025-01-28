@@ -325,8 +325,10 @@ nlu:
     - Only count [high-quality](form_quality) films
     - [2.5](form_quality)
     - [7](form_quality)
+    - Yes, over [8](form_quality)
     - I prefer movies with a quality rating above [8,0](form_quality)
     - Count films rated [7.9](form_quality) or higher
+    - Count films rated [7](form_quality) or higher
     - [5.0](form_quality)
     - [2,8](form_quality)
     - [5.5](form_quality)

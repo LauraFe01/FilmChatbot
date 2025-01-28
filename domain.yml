@@ -243,15 +243,15 @@ responses:
   utter_ask_form_gross:
     - text: "💰 Much better! Give me one more hand, please. \nWe also filter based on film box office income. \nPlease select the number. I'm schematic. 📊"
       buttons:
-        - title: "1.000.000 💵"
+        - title: "1 M"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 1000000}'
-        - title: "1.500.000 💵"
+        - title: "1.5 M"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 1500000}'
-        - title: "4.000.000 💵"
+        - title: "4 M"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 4000000}'
-        - title: "7.000.000 💵"
+        - title: "7 M"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 7000000}'
-        - title: "10.000.000 💵"
+        - title: "10 M"
           payload: '/provide_gross_votes_movie_recommendation{"form_gross": 10000000}'
       button_type: "vertical"
     
