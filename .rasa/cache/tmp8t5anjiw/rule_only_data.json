@@ -1,0 +1,8 @@
+{
+  "rule_only_slots": [],
+  "rule_only_loops": [
+    "gross_votes_recommendation_form",
+    "movie_recommendation_form",
+    "film_count_form"
+  ]
+}

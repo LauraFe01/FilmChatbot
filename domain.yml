@@ -238,7 +238,7 @@ responses:
     - text: "⭐ What is the minimum rating you want for the movie (0.0-10.0)?"
   
   utter_ask_form_votes:
-  - text: "🎥 The world is full of amazing films! 🌍 Use the number of votes as a filter to find the most popular ones. 📝 \nPlease provide me with the number of votes for which you want to filter the movies"
+  - text: "🎥 The world is full of amazing films! 🌍 Use the number of votes as a filter to find the most popular ones. 📝 \nPlease provide me with the number of votes for which you want to filter the movies (eg. Up to 123333 votes, over 222333 reviews ...)"
 
   utter_ask_form_gross:
     - text: "💰 Much better! Give me one more hand, please. \nWe also filter based on film box office income. \nPlease select the number. I'm schematic. 📊"
@@ -259,7 +259,7 @@ responses:
     - text: "❌ I'm sorry, I can't help with that. Can I assist you with something else?"
   
   utter_fallback:
-    - text: "❌ I'm sorry, your answer is not appropriate whith the question"
+    - text: "❌ I'm sorry, your answer is not appropriate with the question"
 
   utter_no_form_in_form:
     - text: "❌ Please complete the form before activating other actions"

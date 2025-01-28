@@ -57,6 +57,7 @@ nlu:
     - Can you list the most loved movies of all time?
     - What are some highly recommended movies?
     - Show me a list of trending movies.
+    - What are the best movies in your database?
 
 - intent: ask_director
   examples: |

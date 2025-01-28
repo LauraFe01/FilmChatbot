@@ -73,6 +73,7 @@ class ActionAskDirectorMovie(Action):
         
         if movie_row.empty:
             new_name, score = process.extractOne(movie_name, movies.tolist())
+
             if score > soglia_fuzzy:
                 dispatcher.utter_message("You misspelled the name of the movie. Don't worry, I've got it! 😊✨")
                 movie_row = movies_df[movies_df['Series_Title'].str.contains(new_name, case=False, na=False)]
@@ -388,7 +389,7 @@ class ActionCountFilms(Action):
             if len(set(director_with_same_surname)) > 1:
                 #actor_list = '\n'.join(actors_with_same_surname)
                 dispatcher.utter_message(
-                    text=f"There are multiple directors with the surname '{form_author.split()[-1]}'. Please be more specific and try again:\n" +
+                    text=f"There are multiple directors with the surname '{form_author.split()[-1]}'. Rephrase your question and then include the specific director's name:\n" +
                         "\n".join([f"👤 {directorr}" for directorr in director_with_same_surname])
                 )
                 return [SlotSet("form_author", None), SlotSet("form_quality", None)]
@@ -729,6 +730,7 @@ class ValidateGrossVotesRecommendationForm(FormValidationAction):
         #logging.info(f"Dentro validate_form_votes, form_votes = {tracker.get_slot('form_votes')}")
         #logging.info(f"Tipo di value form_votes: {type(tracker.get_slot('form_votes'))}")
         value = str(tracker.get_slot("form_votes"))
+        
         if re.fullmatch(r"^\d+$", value):  # Valida che sia un numero intero
             try:
                 votes = int(value)
