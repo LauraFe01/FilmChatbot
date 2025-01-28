@@ -43,5 +43,19 @@ Ensure you have the following tools installed:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/moviebot.git
-   cd moviebot
+   git clone [https://github.com/your-username/moviebot.git](https://github.com/LauraFe01/FilmChatbot.git)
+2. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+4. Train the Rasa model:
+   ```bash
+   rasa train
+5. Start the action server:
+   ```bash
+   rasa run actions
+6. Launch the chatbot:
+   ```bash
+   rasa shell
+7. Launch the chatbot on Telgram (alternative to the previous point):
+   ```bash
+   rasa run
